@@ -171,7 +171,8 @@ header .intro-text .skills {
 }
 
 section {
-    padding: 100px 0;
+    padding: 75px 0;
+    padding-bottom: 10px;
 }
 
 section h2 {
