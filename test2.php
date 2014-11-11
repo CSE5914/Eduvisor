@@ -1,4 +1,24 @@
-<html lang="en">
+<?php
+session_start();
+$con = mysqli_connect("localhost","root","","eduvisor");
+    if(mysqli_connect_errno())
+        echo "Failed" . mysqli_connect_error();
+$student_id=$_SESSION['student_id'];    
+$core=[];
+$applied=[];
+$other=[];
+echo $student_id;
+$result = mysqli_query($con,"SELECT * FROM student_courses WHERE student_id='" . $student_id . "'");
+while($row = mysqli_fetch_array($result)) {
+    if($row['type'] === "core")
+        $core[]=$row;
+    else if($row['type'] === "applied")
+        $applied[]=$row;
+    else
+        $other[]=$row;
+}
+echo '
+<!--<html lang="en">
 
 <head>
 
@@ -50,11 +70,11 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="page-scroll">
-                       <a href="#welcome">Welcome, user</a>
+                       <a href="#welcome">Welcome,  '.explode(" ",$_SESSION['user'])[0].'</a>
                     </li>
                     
                     <li class="page-scroll">
-                        <a href="home.html">Log-out</a>
+                        <a href="index.php">Log-out</a>
                     </li>
                     <!--<li class="page-scroll">
                         <a href="#contact">Contact</a>
@@ -75,30 +95,17 @@
         </div>
     </section>
 
-    <!-- <div class="row">
-        <div class="row text-center">
-            <div class="form-group col-md-6 text-right">
-                    <button type="submit" class="btn btn-primary btn-mini" style="width:25%"><i class="glyphicon glyphicon-user"></i> Personal</button>
-            </div>
-            <div class="form-group col-md-6 text-left">
-                    <button type="submit" class="btn btn-primary btn-mini" style="width:25%"><i class="glyphicon glyphicon-book"></i> Course</button>
-            </div>
-                 
-        </div> -->
     </div>
     <div class="container">   
         <div class="row">
             <div class="col-lg-10">
                 <ul class="nav nav-tabs">  
-                    <li ><a href="profile.html"><i class="glyphicon glyphicon-user"></i> Personal</a></li>
+                    <li ><a href="profile_personal.php"><i class="glyphicon glyphicon-user"></i> Personal</a></li>
                     <li class="active"><a href=""><i class="glyphicon glyphicon-book"></i> Courses</a></li>
                 </ul>
             </div>
             <div class="col-lg-1">
-                <button type="submit" class="btn btn-primary btn-mini" ><i class="glyphicon glyphicon-edit"></i> Edit</button>
-            </div>  
-            <div class="col-lg-1">
-                <button type="submit" class="btn btn-warning btn-mini" ><i class="glyphicon glyphicon-floppy-disk"></i> Save</button>
+                <button type="submit" class="btn btn-primary btn-mini" data-toggle="modal" data-target="#addCourseModal"><i class="glyphicon glyphicon-plus"></i> Add</button>
             </div>  
         </div>
         <br>
@@ -111,7 +118,9 @@
                             <td><h5>Core Courses</h5></td>
                         </tr>
                         <tr>
-                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo1"> 
+                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo1">';
+                                if($core)
+                                echo '
                                 <table class="table table-striped">
                                     <thead>
                                         <tr><td><h6>Name</h6></td><td><h6>Number</h6></td><td><h6>Credits</h6></td><td><h6>Action</h6></td></tr>
@@ -124,8 +133,9 @@
                                         <tr><td>Algorithms</td><td>6341</td><td>3</td><td><a href="#" class="btn btn-default btn-sm">
                                         <i class="glyphicon glyphicon-cog"></i></a></td></tr>              
                                     </tbody>
-                                </table>
-              
+                                </table>';
+                                else
+                                    echo '<h6>No courses added here</h6>
                                 </div> 
                             </td>
                         </tr>
@@ -134,7 +144,9 @@
                             <td><h5>Applied Core Courses</h5></td>
                         </tr>
                         <tr>
-                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo2"> 
+                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo2">'; 
+                                if($applied)
+                                echo '    
                                 <table class="table table-striped">
                                     <thead>
                                         <tr><td><h6>Name</h6></td><td><h6>Number</h6></td><td><h6>Credits</h6></td><td><h6>Action</h6></td></tr>
@@ -146,8 +158,10 @@
                                         <i class="glyphicon glyphicon-cog"></i></a></td></tr>
                                                       
                                     </tbody>
-                                </table>
-              
+                                </table>';
+                                else
+                                    
+                                echo '<h6>No courses added here</h6>
                                 </div> 
                             </td>
                         </tr>
@@ -157,7 +171,9 @@
                         </tr>
                         <tr>
                             <tr>
-                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo3"> 
+                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo3">'; 
+                                if($other)
+                                echo '
                                 <table class="table table-striped">
                                     <thead>
                                         <tr><td><h6>Name</h6></td><td><h6>Number</h6></td><td><h6>Credits</h6></td><td><h6>Action</h6></td></tr>
@@ -176,8 +192,9 @@
                                         <tr><td>Capstone: Knowledge Sys</td><td>5914</td><td>3</td><td><a href="#" class="btn btn-default btn-sm">
                                         <i class="glyphicon glyphicon-cog"></i></a></td></tr>             
                                     </tbody>
-                                </table>
-              
+                                </table>';
+                                else
+                                    echo '<h6>No course added here</h6>
                                 </div> 
                             </td>
                         </tr>
@@ -189,6 +206,42 @@
         </div>         
     </div>
     
+    <div class="modal fade" id="addCourseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="POST" id="signin_form">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="false">&times;</span><span class="sr-only">Close</span></button>
+                        <h3 class="modal-title">Add a Course</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-2"><h4><label for="category" style="padding-top:8px">Course:</label></h4></div>
+                            <div class="col-md-8"><select class="form-control" style="width: 100%">';
+                                $result = mysqli_query($con,"SELECT * FROM course_list");
+                                while($row=mysqli_fetch_array($result)){
+                                    echo '<option value="' .$row['CourseID']. '">' .$row['Number'].': '.$row['CourseTitle']. '</option>';
+                                }
+                            echo '
+                            </select></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><h4><label for="category" style="padding-top:8px">Course:</label></h4></div>
+                            <div class="col-md-8"><select class="form-control" style="width: 100%">
+                                <option value="Core">Core</option>
+                                <option value="Applied Core">Applied Core</option>
+                                <option value="Other">Other</option>
+                            </select></div>
+                        </div>
+                    </div>    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form> 
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
 
     </section>
@@ -212,14 +265,6 @@
         </a>
     </div>
 
-    <!-- Portfolio Modals -->
-    
-    
-    
-    
-    
-    
-
     <!-- jQuery Version 1.11.0 -->
     <script src="js/jquery-1.11.0.js"></script>
 
@@ -240,4 +285,5 @@
 
 </body>
 
-</html>
+</html>';
+?>

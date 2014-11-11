@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<HTML>
+<HEAD> <TITLE> Example Watson Question </TITLE></HEAD>
+<BODY>
+	<script src="js/jquery-1.11.0.js"></script>
+	<script type="text/javascript">
+	 	/*$.ajax({
+		type: "post",
+		url: "https://watson-wdc01.ihost.com/instance/501/deepqa/v1/question",
+		headers: {
+      		'Content-Type'  :'application/json',
+      		'Accept':'application/json',
+      		'X-synctimeout' : '30',
+      		'Authorization' :  auth },
+		success: function(employee) {
+			if(callback && typeof callback === "function")
+				callback(employee);
+		},
+		error: function(xhr, text, errorString) {
+			console.log("there was an error");
+			console.log(errorString);
+		}
+	});*/
+	var question = "What applied core classes can I take?";
+	var username = "osu_student23";
+	var password = "mkzNvWyD";
+	var auth = "Basic " + window.btoa(username+":"+password); 	
+	var questionInfo = '{"question":{ "questionText":"'+ question +'"}}"';
+
+	$.ajax({
+    url : "https://watson-wdc01.ihost.com/instance/501/deepqa/v1/question",
+    type: "POST",
+    headers: {
+      		'Content-Type'  :'application/json',
+      		'Accept':'application/json',
+      		'X-synctimeout' : '30',
+      		'Authorization' :  auth },
+    content : questionInfo,
+    success: function(data, textStatus, jqXHR)
+    {
+    	console.log("success")
+        console.log(data);
+    },
+    error: function (jqXHR, textStatus, errorThrown)
+    {
+ 		console.log("error"+errorThrown);
+    }
+});
+	 </script>
+	 
+<FORM method="get" action="question.php"><LABEL>Server (Default):</LABEL>
+<INPUT type="text" size="50" name="server" value="http://9.53.162.65:8080/deepqa/v1/question"/> 
+<BR><BR>
+<LABEL>Your Question?</LABEL><input type="text" size="50" name="question"  /><INPUT type="submit" value="Go"/>
+</FORM>
+</BODY>
+</HTML>
