@@ -7,16 +7,21 @@ $student_id=$_SESSION['student_id'];
 $core=[];
 $applied=[];
 $other=[];
-echo $student_id;
 $result = mysqli_query($con,"SELECT * FROM student_courses WHERE student_id='" . $student_id . "'");
 while($row = mysqli_fetch_array($result)) {
-    if($row['type'] === "core")
-        $core[]=$row;
-    else if($row['type'] === "applied")
-        $applied[]=$row;
-    else
-        $other[]=$row;
+    $result2 = mysqli_query($con,"SELECT * FROM course_list WHERE CourseID='" . $row['course_id'] . "'");
+    $row2 = mysqli_fetch_array($result2);
+    if($row['type'] === "core"){
+        $core[] = $row2;
+    }    
+    else if($row['type'] === "applied"){
+        $applied[] = $row2;
+    }
+    else{
+        $other[] = $row2;
+    }    
 }
+
 echo '
 <!--<html lang="en">
 
@@ -48,6 +53,20 @@ echo '
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <script type="text/javascript">
+        function deleteCourse(courseid){
+            var theForm, newInput1, newInput2;
+            theForm = document.createElement("form");
+            theForm.action = "deleteCourse.php";
+            theForm.method = "post";
+            newInput1 = document.createElement("input");
+            newInput1.type = "hidden";
+            newInput1.name = "courseID";
+            newInput1.value = courseid;
+            theForm.appendChild(newInput1);
+            theForm.submit();
+        }
+    </script>
 </head>
 
 <body id="page-top" class="index">
@@ -63,7 +82,7 @@ echo '
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">Edu-Visor</a>
+                <a class="navbar-brand" href="#page-top">Edu-Visor</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -105,7 +124,7 @@ echo '
                 </ul>
             </div>
             <div class="col-lg-1">
-                <button type="submit" class="btn btn-primary btn-mini" ><i class="glyphicon glyphicon-plus"></i> Add</button>
+                <button type="button" class="btn btn-primary btn-mini" data-toggle="modal" data-target="#addCourseModal"><i class="glyphicon glyphicon-plus"></i> Add</button>
             </div>  
         </div>
         <br>
@@ -119,21 +138,26 @@ echo '
                         </tr>
                         <tr>
                             <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo1">';
-                                if($core)
+                                if($core){
                                 echo '
                                 <table class="table table-striped">
                                     <thead>
                                         <tr><td><h6>Name</h6></td><td><h6>Number</h6></td><td><h6>Credits</h6></td><td><h6>Action</h6></td></tr>
                                     </thead>
-                                    <tbody>
-                                        <tr><td>Programming Language</td><td>6431</td><td>3</td><td><a href="#" class="btn btn-default btn-sm">
-                                        <i class="glyphicon glyphicon-cog"></i></a></td></tr>
-                                        <tr><td>Operationg Systems</td><td>6331</td><td>3</td><td><a href="#" class="btn btn-default btn-sm">
-                                        <i class="glyphicon glyphicon-cog"></i></a></td></tr>
-                                        <tr><td>Algorithms</td><td>6341</td><td>3</td><td><a href="#" class="btn btn-default btn-sm">
-                                        <i class="glyphicon glyphicon-cog"></i></a></td></tr>              
+                                    <tbody>';
+                                        foreach($core as $course) {
+                                        echo '
+                                        <tr><td>'.$course['CourseTitle'].'</td>
+                                        <td>'.$course['Number'].'</td>
+                                        <td>'.$course['Credits'].'</td>
+                                        <td><button class="btn btn-default btn-sm" title="delete" onclick="deleteCourse('.$course['CourseID'].');">
+                                        <i class="glyphicon glyphicon-trash"></i></button></td>
+                                        </tr>';  
+                                        }            
+                                    echo '    
                                     </tbody>
                                 </table>';
+                                }
                                 else
                                     echo '<h6>No courses added here</h6>';
                                 echo '    
@@ -146,23 +170,28 @@ echo '
                         </tr>
                         <tr>
                             <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo2">'; 
-                                if($applied)
+                                if($applied){
                                 echo '    
                                 <table class="table table-striped">
                                     <thead>
                                         <tr><td><h6>Name</h6></td><td><h6>Number</h6></td><td><h6>Credits</h6></td><td><h6>Action</h6></td></tr>
                                     </thead>
-                                    <tbody>
-                                        <tr><td>Data Mining</td><td>5243</td><td>3</td><td><a href="#" class="btn btn-default btn-sm">
-                                        <i class="glyphicon glyphicon-cog"></i></a></td></tr>
-                                        <tr><td>Parrallel Computing</td><td>5441</td><td>3</td><td><a href="#" class="btn btn-default btn-sm">
-                                        <i class="glyphicon glyphicon-cog"></i></a></td></tr>
-                                                      
+                                    <tbody>';
+                                        foreach($applied as $course) {
+                                        echo '
+                                        <tr><td>'.$course['CourseTitle'].'</td>
+                                        <td>'.$course['Number'].'</td>
+                                        <td>'.$course['Credits'].'</td>
+                                        <td><a href="#" class="btn btn-default btn-sm" title="delete" onclick="deleteCourse('.$course['CourseID'].');">
+                                        <i class="glyphicon glyphicon-trash"></i></a></td>
+                                        </tr>';  
+                                        }            
+                                    echo '          
                                     </tbody>
                                 </table>';
+                                }
                                 else
-                                    
-                                echo '<h6>No courses added</h6>';
+                                    echo '<h6>No courses added</h6>';
                                 echo'
                                 </div> 
                             </td>
@@ -174,27 +203,26 @@ echo '
                         <tr>
                             <tr>
                             <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo3">'; 
-                                if($other)
+                                if($other){
                                 echo '
                                 <table class="table table-striped">
                                     <thead>
                                         <tr><td><h6>Name</h6></td><td><h6>Number</h6></td><td><h6>Credits</h6></td><td><h6>Action</h6></td></tr>
                                     </thead>
-                                    <tbody>
-                                        <tr><td>Adv. Computer Arch</td><td>6429</td><td>3</td><td><a href="#" class="btn btn-default btn-sm">
-                                        <i class="glyphicon glyphicon-cog"></i></a></td></tr>
-                                        <tr><td>Mobile App Dev</td><td>5246</td><td>3</td><td><a href="#" class="btn btn-default btn-sm">
-                                        <i class="glyphicon glyphicon-cog"></i></a></td></tr>
-                                        <tr><td>MS Research</td><td>6998</td><td>3</td><td><a href="#" class="btn btn-default btn-sm">
-                                        <i class="glyphicon glyphicon-cog"></i></a></td></tr>  
-                                        <tr><td>Info Security Projects</td><td>5472</td><td>3</td><td><a href="#" class="btn btn-default btn-sm">
-                                        <i class="glyphicon glyphicon-cog"></i></a></td></tr>
-                                        <tr><td>Capstone: SW App</td><td>5911</td><td>3</td><td><a href="#" class="btn btn-default btn-sm">
-                                        <i class="glyphicon glyphicon-cog"></i></a></td></tr>
-                                        <tr><td>Capstone: Knowledge Sys</td><td>5914</td><td>3</td><td><a href="#" class="btn btn-default btn-sm">
-                                        <i class="glyphicon glyphicon-cog"></i></a></td></tr>             
+                                    <tbody>';
+                                        foreach($other as $course) {
+                                        echo '
+                                        <tr><td>'.$course['CourseTitle'].'</td>
+                                        <td>'.$course['Number'].'</td>
+                                        <td>'.$course['Credits'].'</td>
+                                        <td><a href="#" class="btn btn-default btn-sm" title="delete" onclick="deleteCourse('.$course['CourseID'].');">
+                                        <i class="glyphicon glyphicon-trash"></i></a></td>
+                                        </tr>';  
+                                        }            
+                                    echo '           
                                     </tbody>
                                 </table>';
+                                }
                                 else
                                     echo '<h6>No course added here</h6>';
                                 echo '
@@ -224,6 +252,66 @@ echo '
             </div>
         </div>
     </footer>
+
+    <div class="modal fade" id="addCourseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form  action="addCourse.php" method="POST" id="signin_form">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="false">&times;</span><span class="sr-only">Close</span></button>
+                        <h3 class="modal-title">Add a Course</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-2"><h4><label for="category" style="padding-top:8px">Course:</label></h4></div>
+                            <div class="col-md-8"><select class="form-control" style="width: 100%" name="course">';
+                                $result = mysqli_query($con,"SELECT * FROM course_list");
+                                while($row=mysqli_fetch_array($result)){
+                                    echo '<option value="'.$row['CourseID'].'">' .$row['Number'].': '.$row['CourseTitle']. '</option>';
+                                }
+                            echo '
+                            </select></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><h4><label for="category" style="padding-top:8px">Course:</label></h4></div>
+                            <div class="col-md-8"><select class="form-control" style="width: 100%" name="type">
+                                <option value="core">Core</option>
+                                <option value="applied">Applied Core</option>
+                                <option value="other">Other</option>
+                            </select></div>
+                        </div>
+                    </div>    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </form> 
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="deleteCourseConfirmModal" name="deleteCourseConfirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form  action="addCourse.php" method="POST" id="signin_form">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="false">&times;</span><span class="sr-only">Close</span></button>
+                        <h3 class="modal-title">delete a Course</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <h3>Are you sure you want to delete this course?</h3>
+                            <input type="text" name="test" id="test"/>
+                        </div>
+                    </div>    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" name="confirmDelete" id="confirmDelete">Yes</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                    </div>
+                </form> 
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
     <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
     <div class="scroll-top page-scroll visible-xs visble-sm">
