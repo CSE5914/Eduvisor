@@ -150,21 +150,23 @@ foreach ($answers as &$value)
                        <div class="container collapse" id="answer'.$i.'">   
                           <div class="panel-body">'.$value->{"formattedText"}.'<br>
                             <br>
-                            <a href="#">See Full Document</a>
+                            <!--<a href="#">See Full Document</a>-->
                           </div>
-                          <div class="panel-footer">
+                          <!--<div class="panel-footer">
                             <div class="btn-group btn-group-justified">
-                                <div class="col-lg-2 pull-right">
+                                <div class="col-lg-2 col-lg-offset-6">
                                     <a href="#" class="btn btn-primary btn-mini"><i class="glyphicon glyphicon-arrow-left"></i> Return to all responses
                                     </a>
+                                    </div>
+                                    <div class="col-lg-2 col-lg-offset-2">
                                     <button type="submit" class="btn btn-warning btn-mini"><i class="glyphicon glyphicon-floppy-disk"></i> Save response</button>
                                 </div>
                             </div>
-                          </div>
+                          </div>-->
                         </div>       
                     </div>
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-success progress-bar-striped active" style="width: '.substr($value->{"confidence"},2,2).'%">
+                    <div class="progress" style="height:20px;">
+                        <div class="progress-bar progress-bar-success progress-bar-striped active" style="font-size: 18px;line-height: 18px;width: '.substr($value->{"confidence"},2,2).'%">
                             <span class="">'.substr($value->{"confidence"},2,2).'% Confidence</span>
                         </div>
                     </div>
