@@ -1,30 +1,31 @@
 <?php
 session_start();
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-    if(isset($_POST['btn_save'])){
-        $con = mysqli_connect("localhost","root","","eduvisor");
-        if(mysqli_connect_errno())
-            echo "Failed" . mysqli_connect_error();
-        $name = $_POST['name'];
-        $names = explode(" ", $name);
-        $fname = $names[0];
-        $lname = $names[1];
-        $email = $_POST['email'];
-        $depart = "Computer Science and Engineering";
-        $phone = $_POST['phone'];
-        $degree = $_POST['degree'];
-        $year = $_POST['year'];
-        $semester = $_POST['sem'];
+if(isset($_SESSION['student_id'])){
+    if($_SERVER["REQUEST_METHOD"] == "POST"){
+        if(isset($_POST['btn_save'])){
+            $con = mysqli_connect("localhost","root","","eduvisor");
+            if(mysqli_connect_errno())
+                echo "Failed" . mysqli_connect_error();
+            $name = $_POST['name'];
+            $names = explode(" ", $name);
+            $fname = $names[0];
+            $lname = $names[1];
+            $email = $_POST['email'];
+            $depart = "Computer Science and Engineering";
+            $phone = $_POST['phone'];
+            $degree = $_POST['degree'];
+            $year = $_POST['year'];
+            $semester = $_POST['sem'];
 
-        
-        mysqli_query($con,"UPDATE student  SET first_name='" .$fname. "',last_name='" .$lname. "',email='" .$email. "', phone='" .$phone. "', department='" .$depart. "', degree_id='" .$degree. "', enroll_sem='" .$semester. "', enroll_year= '".$year."' WHERE email='".$email."'");
-        mysql_close($con);
+            
+            mysqli_query($con,"UPDATE student  SET first_name='" .$fname. "',last_name='" .$lname. "',email='" .$email. "', phone='" .$phone. "', department='" .$depart. "', degree_id='" .$degree. "', enroll_sem='" .$semester. "', enroll_year= '".$year."' WHERE email='".$email."'");
+            mysql_close($con);
 
 
+        }
+         $message = "Please try again: Invalid email/password";
+                echo "<script type='text/javascript'>alert('$message');</script>";
     }
-     $message = "Please try again: Invalid email/password";
-            echo "<script type='text/javascript'>alert('$message');</script>";
-}
    
 echo '
 <html lang="en">
@@ -171,7 +172,7 @@ echo '
                     </li>
                     
                     <li class="page-scroll">
-                        <a href="index.php">Log-out</a>
+                        <a href="logout.php">Log-out</a>
                     </li>
                     <!--<li class="page-scroll">
                         <a href="#contact">Contact</a>
@@ -359,4 +360,8 @@ echo '
 </body>
 
 </html>';
+} else{
+    session_destroy();
+    header("location: index.php");
+}
 ?>

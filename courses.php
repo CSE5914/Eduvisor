@@ -1,26 +1,27 @@
 <?php
 session_start();
-$con = mysqli_connect("localhost","root","","eduvisor");
-    if(mysqli_connect_errno())
-        echo "Failed" . mysqli_connect_error();
-$student_id=$_SESSION['student_id'];    
-$core=[];
-$applied=[];
-$other=[];
-$result = mysqli_query($con,"SELECT * FROM student_courses WHERE student_id='" . $student_id . "'");
-while($row = mysqli_fetch_array($result)) {
-    $result2 = mysqli_query($con,"SELECT * FROM course_list WHERE CourseID='" . $row['course_id'] . "'");
-    $row2 = mysqli_fetch_array($result2);
-    if($row['type'] === "core"){
-        $core[] = $row2;
-    }    
-    else if($row['type'] === "applied"){
-        $applied[] = $row2;
+if(isset($_SESSION['student_id'])){
+    $con = mysqli_connect("localhost","root","","eduvisor");
+        if(mysqli_connect_errno())
+            echo "Failed" . mysqli_connect_error();
+    $student_id=$_SESSION['student_id'];    
+    $core=[];
+    $applied=[];
+    $other=[];
+    $result = mysqli_query($con,"SELECT * FROM student_courses WHERE student_id='" . $student_id . "'");
+    while($row = mysqli_fetch_array($result)) {
+        $result2 = mysqli_query($con,"SELECT * FROM course_list WHERE CourseID='" . $row['course_id'] . "'");
+        $row2 = mysqli_fetch_array($result2);
+        if($row['type'] === "core"){
+            $core[] = $row2;
+        }    
+        else if($row['type'] === "applied"){
+            $applied[] = $row2;
+        }
+        else{
+            $other[] = $row2;
+        }    
     }
-    else{
-        $other[] = $row2;
-    }    
-}
 
 echo '
 <!--<html lang="en">
@@ -93,7 +94,7 @@ echo '
                     </li>
                     
                     <li class="page-scroll">
-                        <a href="index.php">Log-out</a>
+                        <a href="logout.php">Log-out</a>
                     </li>
                     <!--<li class="page-scroll">
                         <a href="#contact">Contact</a>
@@ -341,4 +342,8 @@ echo '
 </body>
 
 </html>';
+} else{
+    session_destroy();
+    header("location: index.php");
+}    
 ?>
