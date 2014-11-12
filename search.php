@@ -8,7 +8,7 @@ $authString = "Basic " . base64_encode($username . ":" . $password);
 
 $watsonURL = "https://watson-wdc01.ihost.com/instance/501/deepqa/v1/question";
 
-$questionInfo = '{"question":{ "questionText":"' . $question .'"}}';
+$questionInfo='{"question":{ "questionText":"' . $question .'", "formattedAnswer":true}}';
 
 $options = array(
 	"http" => array(
@@ -89,7 +89,7 @@ echo '
                     </li>
                     
                     <li class="page-scroll">
-                        <a href="home.html">Log-out</a>
+                        <a href="index.php">Log-out</a>
                     </li>
                     <!--<li class="page-scroll">
                         <a href="#contact">Contact</a>
@@ -132,7 +132,7 @@ echo '
         <br>
         <div class="row">
             <div class="container-fluid">
-                <h2>When is tuition due?</h2>
+                <h2>'.$question.'</h2>
             </div>
         </div>
         <div class="row">
@@ -143,19 +143,19 @@ foreach ($answers as &$value)
 	echo '
         
                <div class="list-group" data-toggle="collapse" data-target="#answer'.$i.'" class="accordion-toggle" style="margin-bottom:0;">
-                    <a href="#" class="list-group-item active">
+                    <a class="list-group-item active">
                         <h4 class="list-group-item-heading">Answer</h4>
-                        <p class="list-group-item-text" style="color:white;">'.$evidence[$i]->{"text"}.'</p>
+                        <p class="list-group-item-text" style="color:white;">'.$value->{"text"}.'</p>
                     </a>
                        <div class="container collapse" id="answer'.$i.'">   
-                          <div class="panel-body">'.$value->{"text"}.'<br>
+                          <div class="panel-body">'.$value->{"formattedText"}.'<br>
                             <br>
                             <a href="#">See Full Document</a>
                           </div>
                           <div class="panel-footer">
                             <div class="btn-group btn-group-justified">
                                 <div class="col-lg-2 pull-right">
-                                    <a href="Responses.html" class="btn btn-primary btn-mini"><i class="glyphicon glyphicon-arrow-left"></i> Return to all responses
+                                    <a href="#" class="btn btn-primary btn-mini"><i class="glyphicon glyphicon-arrow-left"></i> Return to all responses
                                     </a>
                                     <button type="submit" class="btn btn-warning btn-mini"><i class="glyphicon glyphicon-floppy-disk"></i> Save response</button>
                                 </div>

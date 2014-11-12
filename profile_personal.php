@@ -1,9 +1,7 @@
 <?php
 session_start();
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    echo 'in post';
     if(isset($_POST['btn_save'])){
-        echo 'btn pressed';
         $con = mysqli_connect("localhost","root","","eduvisor");
         if(mysqli_connect_errno())
             echo "Failed" . mysqli_connect_error();
@@ -99,6 +97,52 @@ echo '
             document.getElementById("btn_save").style.display = "none";
             document.getElementById("btn_cancel").style.display = "none";
         }
+        function save_student(){
+            console.log(document.getElementById("name").value.split(" ")[0]);
+
+            var theForm, newInput1, newInput2, newInput3, newInput4, newInput5, newInput6;
+            theForm = document.createElement("form");
+            theForm.action = "saveStudent.php";
+            theForm.method = "post";
+
+            newInput1 = document.createElement("input");
+            newInput1.type = "hidden";
+            newInput1.name = "txt_fname";
+            newInput1.value = (document.getElementById("name").value).split(" ")[0];
+
+            newInput2 = document.createElement("input");
+            newInput2.type = "hidden";
+            newInput2.name = "txt_lname";
+            newInput2.value = (document.getElementById("name").value).split(" ")[1];
+            
+            newInput3 = document.createElement("input");
+            newInput3.type = "hidden";
+            newInput3.name = "txt_phone";
+            newInput3.value = document.getElementById("phone").value;
+             
+            newInput4 = document.createElement("input");
+            newInput4.type = "hidden";
+            newInput4.name = "txt_degree";
+            newInput4.value = document.getElementById("degree").value;
+             
+            newInput5 = document.createElement("input");
+            newInput5.type = "hidden";
+            newInput5.name = "txt_sem";
+            newInput5.value = document.getElementById("sem").value;
+             
+            newInput6 = document.createElement("input");
+            newInput6.type = "hidden";
+            newInput6.name = "txt_year";
+            newInput6.value = document.getElementById("year").value;
+
+            theForm.appendChild(newInput1);
+            theForm.appendChild(newInput2);
+            theForm.appendChild(newInput3);
+            theForm.appendChild(newInput4);
+            theForm.appendChild(newInput5);
+            theForm.appendChild(newInput6);
+            theForm.submit();
+        }
     </script>
 
 </head>
@@ -116,7 +160,7 @@ echo '
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">Edu-Visor</a>
+                <a class="navbar-brand" href="#page-top">Edu-Visor</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -205,7 +249,7 @@ echo '
                     <div class="row">
                         <div class="col-md-3"><h6><label for="name">Email :</label></h6></div>
                         <div class="col-md-4"><h6><label name="lbl_email" id="lbl_email">' .$email. '</label></h6>
-                        <input type="email" class="form-control" placeholder="doe@email.com" name="email" id="email" value="' .$email. '" required style="display:none"/></div>
+                        <input type="email" class="form-control" placeholder="doe@email.com" name="email" id="email" value="' .$email. '" required style="display:none" disabled/></div>
                     </div>
                     <br> 
                     <div class="row">
@@ -223,13 +267,23 @@ echo '
                     <div class="row">
                         <div class="col-md-3"><h6><label>Degree :</label></h6></div>
                         <div class="col-md-4"><h6><label name="lbl_degree" id="lbl_degree">' .$degree. '</label></h6>
-                        <input type="text" class="form-control" placeholder="Master of Science" name="degree" id="degree" required value="' .$degree. '" style="display:none"></div>
+                        <select name="degree" id="degree" class="form-control" style="width: 100%; display:none;">
+                                    <option value="1"'; if(strcasecmp($degree, "Bachelor of Arts") == 0) echo 'selected'; echo' >BA</option>
+                                    <option value="2"'; if(strcasecmp($degree, "Bachelor of Science") == 0) echo 'selected'; echo'>BS</option>
+                                    <option value="3"'; if(strcasecmp($degree, "Master of Science") == 0) echo 'selected'; echo'>MS</option>
+                                    <option value="4"'; if(strcasecmp($degree, "Doctor of Philosophy") == 0) echo 'selected'; echo'>Phd</option>
+                                    </select></div>
                     </div>
                     <br> 
                    <div class="row">
                         <div class="col-md-3"><h6><label for="name">Enrollment Semester :</label></h6></div>
                         <div class="col-md-4"><h6><label name="lbl_sem" id="lbl_sem">' .$sem. '</label></h6>
-                        <input type="text" class="form-control" placeholder="spring" name="sem" id="sem" required value="' .$sem. '" style="display:none"></div>
+                        <select name="sem" id="sem" class="form-control" style="width: 100%; display:none;">
+                                    <option value="Spring"'; if(strcasecmp($sem, "Spring") == 0) echo 'selected'; echo' >Spring</option>
+                                    <option value="Summer"'; if(strcasecmp($sem, "Summer") == 0) echo 'selected'; echo' >Summer</option>
+                                    <option value="Autumn"'; if(strcasecmp($sem, "Autumn") == 0) echo 'selected'; echo'>Autumn</option>
+                                    </select>
+                        </div>
                     </div>
                     <br>  
                     <div class="row">
@@ -241,7 +295,7 @@ echo '
                     
                     <div class="row">
                         <div class="col-lg-1">
-                            <button type="submit" name="btn_save" id="btn_save" class="btn btn-info btn-sm" style="width:100%; display: none;">Save</button>
+                            <button type="button" name="btn_save" id="btn_save" class="btn btn-info btn-sm" style="width:100%; display: none;" onclick="save_student();">Save</button>
                         </div>
                         <div class="col-lg-1">
                             <button type="button" name="btn_cancel" id="btn_cancel" class="btn btn-warning btn-sm" style="width:100%; display:none;" onclick=;edit_cancel();>cancel</button>
