@@ -100,14 +100,36 @@ echo '
                 <ul class="nav navbar-nav navbar-right">
                     <li class="hidden">
                         <a href="#page-top"></a>
+                    </li>';
+               session_start();
+if(isset($_SESSION['student_id'])){
+                echo '<li class="page-scroll">
+                       <a href="#welcome">Welcome,  '.explode(" ",$_SESSION['user'])[0].'</a>
+                    </li>
+                    <li>
+                    <a href="index.php">Ask a Question</a>
+                    <li>
+                    <a href="main_forum.php">Forum</a>
                     </li>
                     <li class="page-scroll">
-                        <a href="#login">Log-in</a>
+                        <a href="logout.php">Log-out</a>
+                    </li>';
+               }
+               else{     
+                    echo '<li>
+                        <a href="index.php">Ask a Question</a>
+                    </li>
+                    <li>
+                        <a href="main_forum.php">Forum</a>
                     </li>
                     <li class="page-scroll">
-                        <a href="#register">Register</a>
+                        <a href="index.php#login">Log-in</a>
                     </li>
-                    <!--<li class="page-scroll">
+                    <li class="page-scroll">
+                        <a href="index.php#register">Register</a>
+                    </li>';
+                }
+                   echo '<!--<li class="page-scroll">
                         <a href="#contact">Contact</a>
                     </li>-->
                 </ul>
@@ -139,9 +161,9 @@ echo '
                 </div>
             </div>
         </div>
-    </header>
-
-    <!-- Portfolio Grid Section -->
+    </header>';
+    if(!isset($_SESSION['student_id'])){
+    echo '<!-- Portfolio Grid Section -->
     <section id="login">
         <div class="container">
             <div class="row">
@@ -254,8 +276,9 @@ echo '
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Footer -->
+    </section>';
+}
+echo '<!-- Footer -->
     <footer class="text-center">
         <div class="footer-below">
             <div class="container">

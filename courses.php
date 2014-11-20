@@ -92,7 +92,11 @@ echo '
                     <li class="page-scroll">
                        <a href="#welcome">Welcome,  '.explode(" ",$_SESSION['user'])[0].'</a>
                     </li>
-                    
+                    <li>
+                    <a href="index.php">Ask a Question</a>
+                    <li>
+                    <a href="main_forum.php">Forum</a>
+                    </li>
                     <li class="page-scroll">
                         <a href="logout.php">Log-out</a>
                     </li>
