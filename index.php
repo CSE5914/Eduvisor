@@ -1,6 +1,7 @@
 <?php
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $con = mysqli_connect("localhost","root","","eduvisor");
+
     if(mysqli_connect_errno())
         echo "Failed" . mysqli_connect_error();
 
@@ -34,15 +35,89 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $lname = $_POST['lastname'];
         $email = $_POST['email'];
         $pwd = md5(sha1($_POST['password']));
-        $rpwd = $_POST['confirm'];
+        $rpwd = md5(sha1($_POST['confirm']));
         $depart = "Computer Science and Engineering";
         $phone = $_POST['phone'];
         $degree = $_POST['degree'];
         $year = $_POST['enroll_year'];
         $semester = $_POST['sem'];
+        $error=[];
 
-        
-        mysqli_query($con,"INSERT INTO student (first_name, last_name, email, password, phone, department, degree_id, enroll_sem, enroll_year) VALUES('" .$fname. "','" .$lname. "','" .$email. "','" .$pwd. "','" .$phone. "','" .$depart. "','" .$degree. "','" .$semester. "'," .$year. ")");
+        if(empty($fname))
+            $error[]="First name cannot be empty.";
+        if(empty($lname))
+            $error[]="Last name cannot be empty.";
+        if(!filter_var($email,FILTER_VALIDATE_EMAIL))
+            $error[]="Email is invalid/empty.";
+        if(empty($_POST['password']))
+            $error[]="Password cannot be empty.";
+        if(empty($_POST['confirm']))
+            $error[]="Confirm password cannot be empty.";
+        if(empty($phone))
+            $error[]="Phone cannot be empty.";
+        if(empty($degree))
+            $error[]="Please select a degree.";
+        if(empty($year))
+            $error[]="Enrollment year cannot be empty.";
+        if(empty($semester))
+            $error[]="Please select enrollment semester.";
+        if(!empty($pwd) && !empty($rpwd) && $pwd != $rpwd)
+            $error[]="Password and confirm password do not match.";
+
+        if(count($error)>0) {
+            echo '
+       <div class="modal-dialog" id="modal1" style="position:fixed;relative: 100px;right: 0;left: 0;z-index: 1050;-webkit-overflow-scrolling: touch;outline: 0;">
+            <div class="modal-content">
+            <h5 style="padding:15px;">Kindly address the following errors:</h5>
+                    <ul>';
+                    foreach ($error as &$value) {
+                        echo'<li>'.$value.'</li>';
+                    }
+                echo'
+                    </ul>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="displayme1();">Close</button>
+                    </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->';
+
+        }else{
+
+            $mail_result = mysqli_query($con,"SELECT * FROM student WHERE email='" . $email ."'");
+            $count1=0;
+            if($mail_result){
+            $count1 = mysqli_num_rows($mail_result);
+            }
+
+            if($count1>0){
+                echo '
+        <div class="modal-dialog" id="modal2" style="position:fixed;top: 100px;right: 0;left: 0;z-index: 1050;-webkit-overflow-scrolling: touch;outline: 0;">
+            <div class="modal-content">
+            <h5 style="padding:15px;">Sorry, this email address is already taken.</h5>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="displayme2()">Close</button>
+                    </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->';
+            } else{
+
+        $status=mysqli_query($con,"INSERT INTO student (first_name, last_name, email, password, phone, department, degree_id, enroll_sem, enroll_year) VALUES('" .$fname. "','" .$lname. "','" .$email. "','" .$pwd. "','" .$phone. "','" .$depart. "','" .$degree. "','" .$semester. "'," .$year. ")");
+
+        echo'
+        <div class="modal-dialog" id="modal3" style="position:fixed;top: 100px;right: 0;left: 0;z-index: 1050;-webkit-overflow-scrolling: touch;outline: 0;">
+            <div class="modal-content">';
+            if($status)
+                echo'<h5 style="padding:15px;">Congratulations! You have successfully signed up.</h5>';
+            else
+                echo'<h5 style="padding:15px;">Sorry there was some error while signing up, try again later.</h5>';
+            echo'
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="displayme3()">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->';
+    }
+    }
     }
     mysql_close($con);
 }
@@ -76,6 +151,12 @@ echo '
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script> function displayme1() {
+ document.getElementById("modal1").style.display = "none";}
+ function displayme2(){
+ document.getElementById("modal2").style.display = "none";}
+ function displayme3(){
+ document.getElementById("modal3").style.display = "none";}</script>
 
 </head>
 
@@ -123,10 +204,10 @@ if(isset($_SESSION['student_id'])){
                         <a href="main_forum.php">Forum</a>
                     </li>
                     <li class="page-scroll">
-                        <a href="index.php#login">Log-in</a>
+                        <a href="#login">Log-in</a>
                     </li>
                     <li class="page-scroll">
-                        <a href="index.php#register">Register</a>
+                        <a href="#register">Register</a>
                     </li>';
                 }
                    echo '<!--<li class="page-scroll">
@@ -228,9 +309,9 @@ if(isset($_SESSION['student_id'])){
                              <br>
                              <div class="row">
                                 <div class="col-md-2"><h6><label for="paswword">Password</label></h6></div>
-                                <div class="col-md-4"><input type="text" class="form-control" placeholder="Password" name="password" id="password" required data-validation-required-message="Please enter your name."></div>                            
+                                <div class="col-md-4"><input type="password" class="form-control" placeholder="Password" name="password" id="password" required data-validation-required-message="Please enter your name."></div>                            
                                  <div class="col-md-2"><h6><label>Confirm Password</label></h6></div>
-                                 <div class="col-md-4"><input type="text" class="form-control" placeholder="Confirm Password" name="confirm" id="confirm" required data-validation-required-message="Please enter your name."></div>
+                                 <div class="col-md-4"><input type="password" class="form-control" placeholder="Confirm Password" name="confirm" id="confirm" required data-validation-required-message="Please enter your name."></div>
                             </div>
                              <br>
                              <div class="row">
@@ -279,7 +360,7 @@ if(isset($_SESSION['student_id'])){
     </section>';
 }
 echo '<!-- Footer -->
-    <footer class="text-center navbar-fixed-bottom" id="footer">
+    <footer class="text-center" id="footer">
         <div class="footer-below">
             <div class="container">
                 <div class="row">
