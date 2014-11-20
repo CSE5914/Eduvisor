@@ -1,22 +1,28 @@
 <?php
 session_start();
-$con = mysqli_connect("localhost","root","","eduvisor");
-    if(mysqli_connect_errno())
-        echo "Failed" . mysqli_connect_error();
-$student_id=$_SESSION['student_id'];    
-$core=[];
-$applied=[];
-$other=[];
-echo $student_id;
-$result = mysqli_query($con,"SELECT * FROM student_courses WHERE student_id='" . $student_id . "'");
-while($row = mysqli_fetch_array($result)) {
-    if($row['type'] === "core")
-        $core[]=$row;
-    else if($row['type'] === "applied")
-        $applied[]=$row;
-    else
-        $other[]=$row;
-}
+if(isset($_SESSION['student_id'])){
+    $con = mysqli_connect("localhost","root","","eduvisor");
+        if(mysqli_connect_errno())
+            echo "Failed" . mysqli_connect_error();
+    $student_id=$_SESSION['student_id'];    
+    $core=[];
+    $applied=[];
+    $other=[];
+    $result = mysqli_query($con,"SELECT * FROM student_courses WHERE student_id='" . $student_id . "'");
+    while($row = mysqli_fetch_array($result)) {
+        $result2 = mysqli_query($con,"SELECT * FROM course_list WHERE CourseID='" . $row['course_id'] . "'");
+        $row2 = mysqli_fetch_array($result2);
+        if($row['type'] === "core"){
+            $core[] = $row2;
+        }    
+        else if($row['type'] === "applied"){
+            $applied[] = $row2;
+        }
+        else{
+            $other[] = $row2;
+        }    
+    }
+
 echo '
 <!--<html lang="en">
 
@@ -48,6 +54,20 @@ echo '
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <script type="text/javascript">
+        function deleteCourse(courseid){
+            var theForm, newInput1, newInput2;
+            theForm = document.createElement("form");
+            theForm.action = "deleteCourse.php";
+            theForm.method = "post";
+            newInput1 = document.createElement("input");
+            newInput1.type = "hidden";
+            newInput1.name = "courseID";
+            newInput1.value = courseid;
+            theForm.appendChild(newInput1);
+            theForm.submit();
+        }
+    </script>
 </head>
 
 <body id="page-top" class="index">
@@ -63,7 +83,7 @@ echo '
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">Edu-Visor</a>
+                <a class="navbar-brand" href="#page-top">Edu-Visor</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -72,9 +92,13 @@ echo '
                     <li class="page-scroll">
                        <a href="profile_personal.php">Welcome,  '.explode(" ",$_SESSION['user'])[0].'</a>
                     </li>
-                    
+                    <li>
+                    <a href="index.php">Ask a Question</a>
+                    <li>
+                    <a href="main_forum.php">Forum</a>
+                    </li>
                     <li class="page-scroll">
-                        <a href="index.php">Log-out</a>
+                        <a href="logout.php">Log-out</a>
                     </li>
                     <!--<li class="page-scroll">
                         <a href="#contact">Contact</a>
@@ -101,100 +125,74 @@ echo '
             <div class="col-lg-10">
                 <ul class="nav nav-tabs">  
                     <li ><a href="profile_personal.php"><i class="glyphicon glyphicon-user"></i> Personal</a></li>
-                    <li class="active"><a href=""><i class="glyphicon glyphicon-book"></i> Courses</a></li>
+                    <li class=""><a href="courses.php"><i class="glyphicon glyphicon-book"></i> Courses</a></li>
+                    <li class="active"><a href="savedQuestions.php"><i class="glyphicon glyphicon-book"></i> Saved Questions</a></li>
                 </ul>
             </div>
-            <div class="col-lg-1">
-                <button type="submit" class="btn btn-primary btn-mini" data-toggle="modal" data-target="#addCourseModal"><i class="glyphicon glyphicon-plus"></i> Add</button>
-            </div>  
         </div>
         <br>
         <div classe="row">
-            <div class="container-fluid">
+<div class="container-fluid">
                 <table class="table table-condensed" style="border-collapse:collapse;">
                     <tbody>
                         <tr data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
                             <td><h5><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></h5></td>
-                            <td><h5>Core Courses</h5></td>
+                            <td><h5>What classes do I still need to graduate?</h5></td>
                         </tr>
                         <tr>
-                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo1">';
-                                if($core)
-                                echo '
+                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo1"> 
                                 <table class="table table-striped">
                                     <thead>
-                                        <tr><td><h6>Name</h6></td><td><h6>Number</h6></td><td><h6>Credits</h6></td><td><h6>Action</h6></td></tr>
+                                        <tr><td><h6>Respnose</h6></td></tr>
                                     </thead>
                                     <tbody>
-                                        <tr><td>Programming Language</td><td>6431</td><td>3</td><td><a href="#" class="btn btn-default btn-sm">
-                                        <i class="glyphicon glyphicon-cog"></i></a></td></tr>
-                                        <tr><td>Operationg Systems</td><td>6331</td><td>3</td><td><a href="#" class="btn btn-default btn-sm">
-                                        <i class="glyphicon glyphicon-cog"></i></a></td></tr>
-                                        <tr><td>Algorithms</td><td>6341</td><td>3</td><td><a href="#" class="btn btn-default btn-sm">
-                                        <i class="glyphicon glyphicon-cog"></i></a></td></tr>              
+                                        <tr><td><p>You still need to take the following classes to graduate with a B.S. CSE: 
+                                        <ul>
+                                            <li>CSE 3932</li>
+                                            <li>CSE 5013</li>
+                                            <li>MATH 4193</li>
+                                        </ul></p></td></tr>              
                                     </tbody>
-                                </table>';
-                                else
-                                    echo '<h6>No courses added here</h6>
+                                </table>
+              
                                 </div> 
                             </td>
                         </tr>
-                        <tr data-toggle="collapse" data-target="#demo2" class="accordion-toggle">
+                        <tr data-toggle="collapse" data-target="#demo2" class="accordion-toggle bg-gray">
                             <td><h5><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></h5></td>
-                            <td><h5>Applied Core Courses</h5></td>
+                            <td><h5>Who is my advisor?</h5></td>
                         </tr>
                         <tr>
-                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo2">'; 
-                                if($applied)
-                                echo '    
+                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo2"> 
                                 <table class="table table-striped">
                                     <thead>
-                                        <tr><td><h6>Name</h6></td><td><h6>Number</h6></td><td><h6>Credits</h6></td><td><h6>Action</h6></td></tr>
+                                        <tr><td><h6>Response</h6></td></tr>
                                     </thead>
                                     <tbody>
-                                        <tr><td>Data Mining</td><td>5243</td><td>3</td><td><a href="#" class="btn btn-default btn-sm">
-                                        <i class="glyphicon glyphicon-cog"></i></a></td></tr>
-                                        <tr><td>Parrallel Computing</td><td>5441</td><td>3</td><td><a href="#" class="btn btn-default btn-sm">
-                                        <i class="glyphicon glyphicon-cog"></i></a></td></tr>
+                                        <tr><td><p>Eduvisor will be here to answer all of your basic questions, past that you should contact <a href="http://web.cse.ohio-state.edu/~reeves/">Kitty Reeves</a></p></td></tr>
                                                       
                                     </tbody>
-                                </table>';
-                                else
-                                    
-                                echo '<h6>No courses added here</h6>
+                                </table>
+              
                                 </div> 
                             </td>
                         </tr>
                         <tr data-toggle="collapse" data-target="#demo3" class="accordion-toggle">
                             <td><h5><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></h5></td>
-                            <td><h5>Other Courses</h5></td>
+                            <td><h5>When will CSE 3901 be offered this spring?</h5></td>
                         </tr>
                         <tr>
                             <tr>
-                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo3">'; 
-                                if($other)
-                                echo '
+                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo3"> 
                                 <table class="table table-striped">
                                     <thead>
-                                        <tr><td><h6>Name</h6></td><td><h6>Number</h6></td><td><h6>Credits</h6></td><td><h6>Action</h6></td></tr>
+                                        <tr><td><h6>Response</h6></td></tr>
                                     </thead>
                                     <tbody>
-                                        <tr><td>Adv. Computer Arch</td><td>6429</td><td>3</td><td><a href="#" class="btn btn-default btn-sm">
-                                        <i class="glyphicon glyphicon-cog"></i></a></td></tr>
-                                        <tr><td>Mobile App Dev</td><td>5246</td><td>3</td><td><a href="#" class="btn btn-default btn-sm">
-                                        <i class="glyphicon glyphicon-cog"></i></a></td></tr>
-                                        <tr><td>MS Research</td><td>6998</td><td>3</td><td><a href="#" class="btn btn-default btn-sm">
-                                        <i class="glyphicon glyphicon-cog"></i></a></td></tr>  
-                                        <tr><td>Info Security Projects</td><td>5472</td><td>3</td><td><a href="#" class="btn btn-default btn-sm">
-                                        <i class="glyphicon glyphicon-cog"></i></a></td></tr>
-                                        <tr><td>Capstone: SW App</td><td>5911</td><td>3</td><td><a href="#" class="btn btn-default btn-sm">
-                                        <i class="glyphicon glyphicon-cog"></i></a></td></tr>
-                                        <tr><td>Capstone: Knowledge Sys</td><td>5914</td><td>3</td><td><a href="#" class="btn btn-default btn-sm">
-                                        <i class="glyphicon glyphicon-cog"></i></a></td></tr>             
+                                        <tr><td><p>CSE 3901 will be offered MWF 9:10-10:05 taught by Naeem Shareef, and 1:20-2:15 taught by Naeem Shareef.</p></td></tr>             
                                     </tbody>
-                                </table>';
-                                else
-                                    echo '<h6>No course added here</h6>
+                                </table>
+              
                                 </div> 
                             </td>
                         </tr>
@@ -206,47 +204,11 @@ echo '
         </div>         
     </div>
     
-    <div class="modal fade" id="addCourseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form method="POST" id="signin_form">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="false">&times;</span><span class="sr-only">Close</span></button>
-                        <h3 class="modal-title">Add a Course</h3>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-2"><h4><label for="category" style="padding-top:8px">Course:</label></h4></div>
-                            <div class="col-md-8"><select class="form-control" style="width: 100%">';
-                                $result = mysqli_query($con,"SELECT * FROM course_list");
-                                while($row=mysqli_fetch_array($result)){
-                                    echo '<option value="' .$row['CourseID']. '">' .$row['Number'].': '.$row['CourseTitle']. '</option>';
-                                }
-                            echo '
-                            </select></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2"><h4><label for="category" style="padding-top:8px">Course:</label></h4></div>
-                            <div class="col-md-8"><select class="form-control" style="width: 100%">
-                                <option value="Core">Core</option>
-                                <option value="Applied Core">Applied Core</option>
-                                <option value="Other">Other</option>
-                            </select></div>
-                        </div>
-                    </div>    
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                    </div>
-                </form> 
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
 
 
     </section>
     <!-- Footer -->
-    <footer class="text-center">
+    <footer class="text-center navbar-fixed-bottom" id="footer">
         <div class="footer-below">
             <div class="container">
                 <div class="row">
@@ -257,6 +219,66 @@ echo '
             </div>
         </div>
     </footer>
+
+    <div class="modal fade" id="addCourseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form  action="addCourse.php" method="POST" id="signin_form">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="false">&times;</span><span class="sr-only">Close</span></button>
+                        <h3 class="modal-title">Add a Course</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-2"><h4><label for="category" style="padding-top:8px">Course:</label></h4></div>
+                            <div class="col-md-8"><select class="form-control" style="width: 100%" name="course">';
+                                $result = mysqli_query($con,"SELECT * FROM course_list");
+                                while($row=mysqli_fetch_array($result)){
+                                    echo '<option value="'.$row['CourseID'].'">' .$row['Number'].': '.$row['CourseTitle']. '</option>';
+                                }
+                            echo '
+                            </select></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"><h4><label for="category" style="padding-top:8px">Course:</label></h4></div>
+                            <div class="col-md-8"><select class="form-control" style="width: 100%" name="type">
+                                <option value="core">Core</option>
+                                <option value="applied">Applied Core</option>
+                                <option value="other">Other</option>
+                            </select></div>
+                        </div>
+                    </div>    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </form> 
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="deleteCourseConfirmModal" name="deleteCourseConfirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form  action="addCourse.php" method="POST" id="signin_form">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="false">&times;</span><span class="sr-only">Close</span></button>
+                        <h3 class="modal-title">delete a Course</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <h3>Are you sure you want to delete this course?</h3>
+                            <input type="text" name="test" id="test"/>
+                        </div>
+                    </div>    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" name="confirmDelete" id="confirmDelete">Yes</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                    </div>
+                </form> 
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
     <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
     <div class="scroll-top page-scroll visible-xs visble-sm">
@@ -286,4 +308,8 @@ echo '
 </body>
 
 </html>';
+} else{
+    session_destroy();
+    header("location: index.php");
+}    
 ?>

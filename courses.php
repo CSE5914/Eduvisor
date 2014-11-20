@@ -90,7 +90,7 @@ echo '
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="page-scroll">
-                       <a href="#welcome">Welcome,  '.explode(" ",$_SESSION['user'])[0].'</a>
+                       <a href="profile_personal.php">Welcome,  '.explode(" ",$_SESSION['user'])[0].'</a>
                     </li>
                     <li>
                     <a href="index.php">Ask a Question</a>
@@ -126,6 +126,7 @@ echo '
                 <ul class="nav nav-tabs">  
                     <li ><a href="profile_personal.php"><i class="glyphicon glyphicon-user"></i> Personal</a></li>
                     <li class="active"><a href=""><i class="glyphicon glyphicon-book"></i> Courses</a></li>
+                    <li><a href="savedQuestions.php"><i class="glyphicon glyphicon-book"></i> Saved Questions</a></li>
                 </ul>
             </div>
             <div class="col-lg-1">
@@ -246,7 +247,7 @@ echo '
 
     </section>
     <!-- Footer -->
-    <footer class="text-center">
+    <footer class="text-center navbar-fixed-bottom" id="footer">
         <div class="footer-below">
             <div class="container">
                 <div class="row">
@@ -257,6 +258,7 @@ echo '
             </div>
         </div>
     </footer>
+
 
     <div class="modal fade" id="addCourseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
         <div class="modal-dialog">

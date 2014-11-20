@@ -77,7 +77,7 @@ if(isset($_SESSION['student_id'])){
                         <a href="#page-top"></a>
                     </li>
                     <li class="page-scroll">
-                       <a href="#welcome">Welcome,  '.explode(" ",$_SESSION['user'])[0].'</a>
+                       <a href="profile_personal.php">Welcome,  '.explode(" ",$_SESSION['user'])[0].'</a>
                     </li>
                     <li>
                     <a href="index.php">Ask a Question</a>
@@ -126,4 +126,15 @@ if(isset($_SESSION['student_id'])){
 <input class="btn btn-default" type="reset" name="Submit2" value="Reset" />
 </form>
 </div>
+<footer class="text-center navbar-fixed-bottom" id="footer">
+        <div class="footer-below">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        Powered by IBM Watson
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>

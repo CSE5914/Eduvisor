@@ -50,6 +50,7 @@ echo '
 
     <!-- Custom CSS -->
     <link href="css/freelancer.css" rel="stylesheet">
+    <link href="js/jquery-1.11.0.js" type="text/javascript">
 
     <!-- Custom Fonts -->
     <link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -62,10 +63,12 @@ echo '
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
-</head>
+<script> function displayme() {
+ document.getElementById("modal").style.display = "none";}</script>
+    </head>
 
 <body id="page-top" class="index">
+
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -83,18 +86,36 @@ echo '
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <!--<ul class="nav navbar-nav navbar-right">
-                    <li class="page-scroll">
-                       <a href="#welcome">Welcome, user</a>
+                <ul class="nav navbar-nav navbar-right">';
+               session_start();
+if(isset($_SESSION['student_id'])){
+                echo '<li class="page-scroll">
+                       <a href="profile_personal.php">Welcome,  '.explode(" ",$_SESSION['user'])[0].'</a>
                     </li>
-                    
+                    <li>
+                    <a href="index.php">Ask a Question</a>
+                    <li>
+                    <a href="main_forum.php">Forum</a>
+                    </li>
                     <li class="page-scroll">
-                        <a href="index.php">Log-out</a>
-                    </li>-->
-                    <!--<li class="page-scroll">
-                        <a href="#contact">Contact</a>
-                    </li>-->
-                <!--</ul>-->
+                        <a href="logout.php">Log-out</a>
+                    </li>';
+               }
+               else{     
+                    echo '<li>
+                        <a href="index.php">Ask a Question</a>
+                    </li>
+                    <li>
+                        <a href="main_forum.php">Forum</a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="index.php#login">Log-in</a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="index.php#register">Register</a>
+                    </li>';
+                }
+                   echo '</ul>
             </div>
             <!-- /.navbar-collapse -->
         </div>
@@ -125,7 +146,7 @@ echo '
             <div class="col-lg-10">
                 <ul class="nav nav-tabs">  
                      <li class="active"><a href=""><i class="glyphicon glyphicon-user"></i> Response</a></li>
-                    <li><a href="savedQuestions.html"><i class="glyphicon glyphicon-book"></i> Saved Questions</a></li>
+                    <li><a href="savedQuestions.php"><i class="glyphicon glyphicon-book"></i> Saved Questions</a></li>
                 </ul>
             </div>
         </div>
@@ -140,8 +161,20 @@ echo '
 $i = 0;
 foreach ($answers as &$value)
 {
+    if($i == 0 && intval(substr($value->{"confidence"},2,2)) < 25)
+    {echo '
+        <div class="modal-dialog" id="modal" style="position:fixed;top: 100px;right: 0;left: 0;z-index: 1050;-webkit-overflow-scrolling: touch;outline: 0;">
+            <div class="modal-content">
+            <h5 style="padding:15px;">We are not very confident in this response, maybe you should ask this question on our forum.</h5>
+                    <div class="modal-footer">
+                        <a href="main_forum.php" class="btn btn-success">Go to Forum</a>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="displayme()">Close</button>
+                    </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->';
+    }
+
 	echo '
-        
                <div class="list-group" data-toggle="collapse" data-target="#answer'.$i.'" class="accordion-toggle" style="margin-bottom:0;">
                     <a class="list-group-item active">
                         <h4 class="list-group-item-heading">Answer</h4>
@@ -181,8 +214,9 @@ echo '
         </div>
 </div>
 		</section>
+        
     <!-- Footer -->
-    <footer class="text-center">
+    <footer class="text-center navbar-fixed-bottom" id="footer">
         <div class="footer-below">
             <div class="container">
                 <div class="row">
@@ -193,6 +227,7 @@ echo '
             </div>
         </div>
     </footer>
+
 
     <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
     <div class="scroll-top page-scroll visible-xs visble-sm">
@@ -218,9 +253,9 @@ echo '
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>
-
-</body>
-
-</html>';
+';
 unset($value);
 ?>
+
+</body>
+</html>

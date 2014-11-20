@@ -104,7 +104,7 @@ echo '
                session_start();
 if(isset($_SESSION['student_id'])){
                 echo '<li class="page-scroll">
-                       <a href="#welcome">Welcome,  '.explode(" ",$_SESSION['user'])[0].'</a>
+                       <a href="profile_personal.php">Welcome,  '.explode(" ",$_SESSION['user'])[0].'</a>
                     </li>
                     <li>
                     <a href="index.php">Ask a Question</a>
@@ -279,7 +279,7 @@ if(isset($_SESSION['student_id'])){
     </section>';
 }
 echo '<!-- Footer -->
-    <footer class="text-center">
+    <footer class="text-center navbar-fixed-bottom" id="footer">
         <div class="footer-below">
             <div class="container">
                 <div class="row">
