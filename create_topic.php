@@ -113,7 +113,7 @@ if(isset($_SESSION['student_id'])){
     <textarea rows="3" type="text" class="form-control" name="detail" id="detail" placeholder="Enter question..."></textarea>
 </div>
 <?php echo '
-<div class="form-group" style="">
+<div class="form-group" style="display:none;">
 	<label for="name"><h4 style="color:white;margin-bottom:5px;margin-bottom:5px;">Name</h4></label>
     <input type="text" class="form-control" name="name" id="name" value="'.explode(" ",$_SESSION['user'])[0].'" readonly>
 </div>' ?>

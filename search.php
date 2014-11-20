@@ -216,7 +216,7 @@ echo '
 		</section>
         
     <!-- Footer -->
-    <footer class="text-center navbar-fixed-bottom" id="footer">
+    <footer class="text-center" id="footer">
         <div class="footer-below">
             <div class="container">
                 <div class="row">
