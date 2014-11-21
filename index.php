@@ -360,7 +360,7 @@ if(isset($_SESSION['student_id'])){
     </section>';
 }
 echo '<!-- Footer -->
-    <footer class="text-center" id="footer">
+    <footer class="text-center navbar-fixed-bottom" id="footer">
         <div class="footer-below">
             <div class="container">
                 <div class="row">
