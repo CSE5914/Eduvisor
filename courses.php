@@ -11,6 +11,7 @@ if(isset($_SESSION['student_id'])){
     $result = mysqli_query($con,"SELECT * FROM student_courses WHERE student_id='" . $student_id . "'");
 	$student = mysqli_query($con, "SELECT * FROM student WHERE student_id='" . $student_id . "'");
 	$student_row = mysqli_fetch_array($student);
+    $student_courses = [];
 	$degree = $student_row['degree_id'];
 	if($degree == 4){
 		while($row = mysqli_fetch_array($result)) {
@@ -25,6 +26,7 @@ if(isset($_SESSION['student_id'])){
 			else{
 				$other[] = $row2;
 			}
+            $student_courses[]=$row2['Number'];
 		}
     }
 	if($degree == 3){
@@ -48,6 +50,7 @@ if(isset($_SESSION['student_id'])){
 			else{
 				$other[] = $row2;
 			}
+            $student_courses[]=$row2['Number'];
 		}
     }
 	else if($degree == 2){
@@ -75,6 +78,7 @@ if(isset($_SESSION['student_id'])){
 			else{
 				$other[] = $row2;
 			}
+            $student_courses[]=$row2['Number'];
 		}
 	}
 	else if($degree == 1){
@@ -102,6 +106,7 @@ if(isset($_SESSION['student_id'])){
 			else{
 				$other[] = $row2;
 			}
+            $student_courses[]=$row2['Number'];
 		}
 	}	if($degree == 4){
 		while($row = mysqli_fetch_array($result)) {
@@ -116,6 +121,7 @@ if(isset($_SESSION['student_id'])){
 			else{
 				$other[] = $row2;
 			}
+            $student_courses[]=$row2['Number'];
 		}
     }
 	if($degree == 3){
@@ -139,6 +145,7 @@ if(isset($_SESSION['student_id'])){
 			else{
 				$other[] = $row2;
 			}
+            $student_courses[]=$row2['Number'];
 		}
     }
 	else if($degree == 2){
@@ -166,6 +173,7 @@ if(isset($_SESSION['student_id'])){
 			else{
 				$other[] = $row2;
 			}
+            $student_courses[]=$row2['Number'];
 		}
 	}
 	else if($degree == 1){
@@ -193,6 +201,7 @@ if(isset($_SESSION['student_id'])){
 			else{
 				$other[] = $row2;
 			}
+            $student_courses[]=$row2['Number'];
 		}
 	}
 
@@ -910,7 +919,8 @@ echo '
                             <div class="col-md-8"><select class="form-control" style="width: 100%" name="course">';
                                 $result = mysqli_query($con,"SELECT * FROM course_list");
                                 while($row=mysqli_fetch_array($result)){
-                                    echo '<option value="'.$row['CourseID'].'">' .$row['Number'].': '.$row['CourseTitle']. '</option>';
+                                    if(!in_array($row['Number'], $student_courses))
+                                        echo '<option value="'.$row['CourseID'].'">' .$row['Number'].': '.$row['CourseTitle']. '</option>';
                                 }
                             echo '
                             </select></div>
