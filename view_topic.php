@@ -221,7 +221,9 @@ if(isset($_SESSION['student_id'])){
     <label for="email"><h4 style="color:white;margin-bottom:5px;">Email</h4></label>
     <input type="text" class="form-control" name="a_email" id="a_email" value="DELETE@AOL.com" disabled>
 </div>
-<input name="id" type="hidden" value="<? echo $id; ?>">
+<input name="id" type="hidden" value="';
+echo $id;
+echo '">
 <input type="submit" class="btn btn-default" name="Submit" value="Submit" /> 
 <input class="btn btn-default" type="reset" name="Submit2" value="Reset" />
 </form>
