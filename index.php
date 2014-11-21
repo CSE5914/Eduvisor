@@ -218,9 +218,10 @@ if(isset($_SESSION['student_id'])){
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container-fluid -->
-    </nav>
+    </nav>';
 
-    <!-- Header -->
+    if(!isset($_SESSION['student_id'])){
+    echo '<!-- Header -->
     <header>
         <div class="container">
             <div class="row">
@@ -242,9 +243,8 @@ if(isset($_SESSION['student_id'])){
                 </div>
             </div>
         </div>
-    </header>';
-    if(!isset($_SESSION['student_id'])){
-    echo '<!-- Portfolio Grid Section -->
+    </header>
+    <!-- Portfolio Grid Section -->
     <section id="login">
         <div class="container">
             <div class="row">
@@ -361,7 +361,29 @@ if(isset($_SESSION['student_id'])){
 }
 else
 {
-    echo '<div style="height:200px;background-color:#b00;">&nbsp;</div>';
+    echo '<!-- Header -->
+    <header style="height:100%;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <img class="img-responsive" src="img/profile.png" alt="">
+                    <form action="search.php" method="POST" name="advice" id="adviceform" novalidate>
+                    <div class="intro-text">
+                             <div class="input-group">
+                                <input type="text" class="col-lg-8 form-control" placeholder="Ask me" name="ask" id="ask" >
+                                <span class="input-group-btn">
+                                <button type="submit" class="btn btn-primary btn-small">Advice <i class="glyphicon glyphicon-search"></i></button>
+                             </div>
+                            
+                        
+                        <hr class="star-light">
+                        <span class="skills">An Online Advisor - Whenever you need, wherever you need.</span>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>';
 }
 echo '<!-- Footer -->
     <footer class="text-center navbar-fixed-bottom" id="footer">
