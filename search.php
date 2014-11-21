@@ -246,9 +246,12 @@ echo '
         </div>
 </div>
 		</section>
+        <div  style="padding-bottom:100px;">
+        &nbsp;
+        </div>
         
     <!-- Footer -->
-    <footer class="text-center" id="footer">
+    <footer class="text-center navbar-fixed-bottom" id="footer">
         <div class="footer-below">
             <div class="container">
                 <div class="row">

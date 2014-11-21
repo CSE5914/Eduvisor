@@ -160,7 +160,7 @@ echo '
 
 </head>
 
-<body id="page-top" class="index" style="background-color:#b00;">
+<body id="page-top" class="index">
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -348,7 +348,7 @@ if(isset($_SESSION['student_id'])){
                             <br>
                             <div id="success"></div>
                             <div class="row">
-                                <div class="form-group col-xs-12">
+                                <div class="form-group col-xs-12" style="padding-bottom:80px;">
                                     <button type="submit"  name="register" class="btn btn-primary btn-lg">Register</button>
                                 </div>
                             </div>
@@ -358,6 +358,10 @@ if(isset($_SESSION['student_id'])){
             </div>
         </div>
     </section>';
+}
+else
+{
+    echo '<div style="height:200px;background-color:#b00;">&nbsp;</div>';
 }
 echo '<!-- Footer -->
     <footer class="text-center navbar-fixed-bottom" id="footer">
