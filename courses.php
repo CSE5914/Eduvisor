@@ -6,22 +6,195 @@ if(isset($_SESSION['student_id'])){
             echo "Failed" . mysqli_connect_error();
     $student_id=$_SESSION['student_id'];    
     $core=[];
-    $applied=[];
     $other=[];
+	$elective=[];
     $result = mysqli_query($con,"SELECT * FROM student_courses WHERE student_id='" . $student_id . "'");
-    while($row = mysqli_fetch_array($result)) {
-        $result2 = mysqli_query($con,"SELECT * FROM course_list WHERE CourseID='" . $row['course_id'] . "'");
-        $row2 = mysqli_fetch_array($result2);
-        if($row['type'] === "core"){
-            $core[] = $row2;
-        }    
-        else if($row['type'] === "applied"){
-            $applied[] = $row2;
-        }
-        else{
-            $other[] = $row2;
-        }    
+	$student = mysqli_query($con, "SELECT * FROM student WHERE student_id='" . $student_id . "'");
+	$student_row = mysqli_fetch_array($student);
+	$degree = $student_row['degree_id'];
+	if($degree == 4){
+		while($row = mysqli_fetch_array($result)) {
+			$result2 = mysqli_query($con,"SELECT * FROM course_list WHERE CourseID='" . $row['course_id'] . "'");
+			$row2 = mysqli_fetch_array($result2);
+			if($row['type'] === "core"){
+				$core[] = $row2;
+			}	    
+			else if($row['type'] === "elective"){
+				$elective[] = $row2;
+			}
+			else{
+				$other[] = $row2;
+			}
+		}
     }
+	if($degree == 3){
+		$precore=[];
+		$applied=[];
+		while($row = mysqli_fetch_array($result)) {
+			$result2 = mysqli_query($con,"SELECT * FROM course_list WHERE CourseID='" . $row['course_id'] . "'");
+			$row2 = mysqli_fetch_array($result2);
+			if($row['type'] === "core"){
+				$core[] = $row2;
+			}	    
+			else if($row['type'] === "applied"){
+				$applied[] = $row2;
+			}
+			else if($row['type'] === "precore"){
+				$precore[] = $row2;
+			}
+			else if($row['type'] === "elective"){
+				$elective[] = $row2;
+			}
+			else{
+				$other[] = $row2;
+			}
+		}
+    }
+	else if($degree == 2){
+		$choice=[];
+		$mse=[];
+		$gened=[];
+		while($row = mysqli_fetch_array($result)){
+			$result2 = mysqli_query($con,"SELECT * FROM course_list WHERE CourseID='" . $row['course_id'] . "'");
+			$row2 = mysqli_fetch_array($result2);
+			if($row['type'] === "core"){
+				$core[] = $row2;
+			}	    
+			else if($row['type'] === "choice"){
+				$choice[] = $row2;
+			}
+			else if($row['type'] === "mse"){
+				$mse[] = $row2;
+			}
+			else if($row['type'] === "elective"){
+				$elective[] = $row2;
+			}
+			else if($row['type'] === "gened"){
+				$gened[] = $row2;
+			}	
+			else{
+				$other[] = $row2;
+			}
+		}
+	}
+	else if($degree == 1){
+		$rfcore=[];
+		$gened_la=[];
+		$gened_ms=[];
+		while($row = mysqli_fetch_array($result)){
+			$result2 = mysqli_query($con,"SELECT * FROM course_list WHERE CourseID='" . $row['course_id'] . "'");
+			$row2 = mysqli_fetch_array($result2);
+			if($row['type'] === "core"){
+				$core[] = $row2;
+			}	    
+			else if($row['type'] === "rfcore"){
+				$rfcore[] = $row2;
+			}
+			else if($row['type'] === "gened_la"){
+				$gened_la[] = $row2;
+			}
+			else if($row['type'] === "gened_ms"){
+				$gened_ms[] = $row2;
+			}
+			else if($row['type'] === "elective"){
+				$elective[] = $row2;
+			}	
+			else{
+				$other[] = $row2;
+			}
+		}
+	}	if($degree == 4){
+		while($row = mysqli_fetch_array($result)) {
+			$result2 = mysqli_query($con,"SELECT * FROM course_list WHERE CourseID='" . $row['course_id'] . "'");
+			$row2 = mysqli_fetch_array($result2);
+			if($row['type'] === "core"){
+				$core[] = $row2;
+			}	    
+			else if($row['type'] === "elective"){
+				$elective[] = $row2;
+			}
+			else{
+				$other[] = $row2;
+			}
+		}
+    }
+	if($degree == 3){
+		$precore=[];
+		$applied=[];
+		while($row = mysqli_fetch_array($result)) {
+			$result2 = mysqli_query($con,"SELECT * FROM course_list WHERE CourseID='" . $row['course_id'] . "'");
+			$row2 = mysqli_fetch_array($result2);
+			if($row['type'] === "core"){
+				$core[] = $row2;
+			}	    
+			else if($row['type'] === "applied"){
+				$applied[] = $row2;
+			}
+			else if($row['type'] === "precore"){
+				$precore[] = $row2;
+			}
+			else if($row['type'] === "elective"){
+				$elective[] = $row2;
+			}
+			else{
+				$other[] = $row2;
+			}
+		}
+    }
+	else if($degree == 2){
+		$choice=[];
+		$mse=[];
+		$gened=[];
+		while($row = mysqli_fetch_array($result)){
+			$result2 = mysqli_query($con,"SELECT * FROM course_list WHERE CourseID='" . $row['course_id'] . "'");
+			$row2 = mysqli_fetch_array($result2);
+			if($row['type'] === "core"){
+				$core[] = $row2;
+			}	    
+			else if($row['type'] === "choice"){
+				$choice[] = $row2;
+			}
+			else if($row['type'] === "mse"){
+				$mse[] = $row2;
+			}
+			else if($row['type'] === "elective"){
+				$elective[] = $row2;
+			}
+			else if($row['type'] === "gened"){
+				$gened[] = $row2;
+			}	
+			else{
+				$other[] = $row2;
+			}
+		}
+	}
+	else if($degree == 1){
+		$rfcore=[];
+		$gened_la=[];
+		$gened_ms=[];
+		while($row = mysqli_fetch_array($result)){
+			$result2 = mysqli_query($con,"SELECT * FROM course_list WHERE CourseID='" . $row['course_id'] . "'");
+			$row2 = mysqli_fetch_array($result2);
+			if($row['type'] === "core"){
+				$core[] = $row2;
+			}	    
+			else if($row['type'] === "rfcore"){
+				$rfcore[] = $row2;
+			}
+			else if($row['type'] === "gened_la"){
+				$gened_la[] = $row2;
+			}
+			else if($row['type'] === "gened_ms"){
+				$gened_ms[] = $row2;
+			}
+			else if($row['type'] === "elective"){
+				$elective[] = $row2;
+			}	
+			else{
+				$other[] = $row2;
+			}
+		}
+	}
 
 echo '
 <!--<html lang="en">
@@ -137,10 +310,112 @@ echo '
         <div classe="row">
             <div class="container-fluid">
                 <table class="table table-condensed" style="border-collapse:collapse;">
-                    <tbody>
+                    <tbody>';
+                       if($degree == 4){
+						echo '						
                         <tr data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
                             <td><h5><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></h5></td>
-                            <td><h5>Core Courses</h5></td>
+                            <td><h5>Core</h5></td>
+                        </tr>
+                        <tr>
+                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo1">';
+                                if($core){
+                                echo '
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr><td><h6>Name</h6></td><td><h6>Number</h6></td><td><h6>Credits</h6></td><td><h6>Action</h6></td></tr>
+                                    </thead>
+                                    <tbody>';
+                                        foreach($core as $course) {
+                                        echo '
+                                        <tr><td>'.$course['CourseTitle'].'</td>
+                                        <td>'.$course['Number'].'</td>
+                                        <td>'.$course['Credits'].'</td>
+                                        <td><button class="btn btn-default btn-sm" title="delete" onclick="deleteCourse('.$course['CourseID'].');">
+                                        <i class="glyphicon glyphicon-trash"></i></button></td>
+                                        </tr>';  
+                                        }            
+                                    echo '    
+                                    </tbody>
+                                </table>';
+                                }
+                                else
+                                    echo '<h6>No courses added here</h6>';
+                                echo '    
+                                </div> 
+                            </td>
+                        </tr>                        
+						<tr>
+						<tr data-toggle="collapse" data-target="#demo3" class="accordion-toggle">
+                            <td><h5><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></h5></td>
+                            <td><h5>Electives</h5></td>
+                        </tr>
+                        <tr>
+                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo3">'; 
+                                if($elective){
+                                echo '    
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr><td><h6>Name</h6></td><td><h6>Number</h6></td><td><h6>Credits</h6></td><td><h6>Action</h6></td></tr>
+                                    </thead>
+                                    <tbody>';
+                                        foreach($elective as $course) {
+                                        echo '
+                                        <tr><td>'.$course['CourseTitle'].'</td>
+                                        <td>'.$course['Number'].'</td>
+                                        <td>'.$course['Credits'].'</td>
+                                        <td><a href="#" class="btn btn-default btn-sm" title="delete" onclick="deleteCourse('.$course['CourseID'].');">
+                                        <i class="glyphicon glyphicon-trash"></i></a></td>
+                                        </tr>';  
+                                        }            
+                                    echo '          
+                                    </tbody>
+                                </table>';
+                                }
+                                else
+                                    echo '<h6>No courses added</h6>';
+                                echo'
+                                </div> 
+                            </td>
+                        </tr>'; 
+						}
+						else if($degree == 3){
+						echo '
+						<tr data-toggle="collapse" data-target="#demo0" class="accordion-toggle">
+                            <td><h5><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></h5></td>
+                            <td><h5>Graduate Pre-Core</h5></td>
+                        </tr>
+                        <tr>
+                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo0">';
+                                if($precore){
+                                echo '
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr><td><h6>Name</h6></td><td><h6>Number</h6></td><td><h6>Credits</h6></td><td><h6>Action</h6></td></tr>
+                                    </thead>
+                                    <tbody>';
+                                        foreach($precore as $course) {
+                                        echo '
+                                        <tr><td>'.$course['CourseTitle'].'</td>
+                                        <td>'.$course['Number'].'</td>
+                                        <td>'.$course['Credits'].'</td>
+                                        <td><button class="btn btn-default btn-sm" title="delete" onclick="deleteCourse('.$course['CourseID'].');">
+                                        <i class="glyphicon glyphicon-trash"></i></button></td>
+                                        </tr>';  
+                                        }            
+                                    echo '    
+                                    </tbody>
+                                </table>';
+                                }
+                                else
+                                    echo '<h6>No courses added here</h6>';
+                                echo '    
+                                </div> 
+                            </td>
+                        </tr>
+                        <tr data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                            <td><h5><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></h5></td>
+                            <td><h5>Graduate Core</h5></td>
                         </tr>
                         <tr>
                             <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo1">';
@@ -172,7 +447,7 @@ echo '
                         </tr>
                         <tr data-toggle="collapse" data-target="#demo2" class="accordion-toggle">
                             <td><h5><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></h5></td>
-                            <td><h5>Applied Core Courses</h5></td>
+                            <td><h5>Applied Core</h5></td>
                         </tr>
                         <tr>
                             <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo2">'; 
@@ -202,13 +477,374 @@ echo '
                                 </div> 
                             </td>
                         </tr>
-                        <tr data-toggle="collapse" data-target="#demo3" class="accordion-toggle">
+						<tr>
+						<tr data-toggle="collapse" data-target="#demo3" class="accordion-toggle">
+                            <td><h5><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></h5></td>
+                            <td><h5>MS Electives</h5></td>
+                        </tr>
+                        <tr>
+                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo3">'; 
+                                if($elective){
+                                echo '    
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr><td><h6>Name</h6></td><td><h6>Number</h6></td><td><h6>Credits</h6></td><td><h6>Action</h6></td></tr>
+                                    </thead>
+                                    <tbody>';
+                                        foreach($elective as $course) {
+                                        echo '
+                                        <tr><td>'.$course['CourseTitle'].'</td>
+                                        <td>'.$course['Number'].'</td>
+                                        <td>'.$course['Credits'].'</td>
+                                        <td><a href="#" class="btn btn-default btn-sm" title="delete" onclick="deleteCourse('.$course['CourseID'].');">
+                                        <i class="glyphicon glyphicon-trash"></i></a></td>
+                                        </tr>';  
+                                        }            
+                                    echo '          
+                                    </tbody>
+                                </table>';
+                                }
+                                else
+                                    echo '<h6>No courses added</h6>';
+                                echo'
+                                </div> 
+                            </td>
+                        </tr>'; 
+						}
+						else if($degree == 2){
+						echo '
+						<tr data-toggle="collapse" data-target="#demo0" class="accordion-toggle">
+                            <td><h5><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></h5></td>
+                            <td><h5>CSE Core</h5></td>
+                        </tr>
+                        <tr>
+                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo0">';
+                                if($core){
+                                echo '
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr><td><h6>Name</h6></td><td><h6>Number</h6></td><td><h6>Credits</h6></td><td><h6>Action</h6></td></tr>
+                                    </thead>
+                                    <tbody>';
+                                        foreach($core as $course) {
+                                        echo '
+                                        <tr><td>'.$course['CourseTitle'].'</td>
+                                        <td>'.$course['Number'].'</td>
+                                        <td>'.$course['Credits'].'</td>
+                                        <td><button class="btn btn-default btn-sm" title="delete" onclick="deleteCourse('.$course['CourseID'].');">
+                                        <i class="glyphicon glyphicon-trash"></i></button></td>
+                                        </tr>';  
+                                        }            
+                                    echo '    
+                                    </tbody>
+                                </table>';
+                                }
+                                else
+                                    echo '<h6>No courses added here</h6>';
+                                echo '    
+                                </div> 
+                            </td>
+                        </tr>
+                        <tr data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                            <td><h5><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></h5></td>
+                            <td><h5>CSE Core Choices</h5></td>
+                        </tr>
+                        <tr>
+                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo1">';
+                                if($choice){
+                                echo '
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr><td><h6>Name</h6></td><td><h6>Number</h6></td><td><h6>Credits</h6></td><td><h6>Action</h6></td></tr>
+                                    </thead>
+                                    <tbody>';
+                                        foreach($choice as $course) {
+                                        echo '
+                                        <tr><td>'.$course['CourseTitle'].'</td>
+                                        <td>'.$course['Number'].'</td>
+                                        <td>'.$course['Credits'].'</td>
+                                        <td><button class="btn btn-default btn-sm" title="delete" onclick="deleteCourse('.$course['CourseID'].');">
+                                        <i class="glyphicon glyphicon-trash"></i></button></td>
+                                        </tr>';  
+                                        }            
+                                    echo '    
+                                    </tbody>
+                                </table>';
+                                }
+                                else
+                                    echo '<h6>No courses added here</h6>';
+                                echo '    
+                                </div> 
+                            </td>
+                        </tr>
+                        <tr data-toggle="collapse" data-target="#demo2" class="accordion-toggle">
+                            <td><h5><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></h5></td>
+                            <td><h5>Math, Science, Engineering Core</h5></td>
+                        </tr>
+                        <tr>
+                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo2">'; 
+                                if($mse){
+                                echo '    
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr><td><h6>Name</h6></td><td><h6>Number</h6></td><td><h6>Credits</h6></td><td><h6>Action</h6></td></tr>
+                                    </thead>
+                                    <tbody>';
+                                        foreach($mse as $course) {
+                                        echo '
+                                        <tr><td>'.$course['CourseTitle'].'</td>
+                                        <td>'.$course['Number'].'</td>
+                                        <td>'.$course['Credits'].'</td>
+                                        <td><a href="#" class="btn btn-default btn-sm" title="delete" onclick="deleteCourse('.$course['CourseID'].');">
+                                        <i class="glyphicon glyphicon-trash"></i></a></td>
+                                        </tr>';  
+                                        }            
+                                    echo '          
+                                    </tbody>
+                                </table>';
+                                }
+                                else
+                                    echo '<h6>No courses added</h6>';
+                                echo'
+                                </div> 
+                            </td>
+                        </tr>
+						<tr data-toggle="collapse" data-target="#demo3" class="accordion-toggle">
+                            <td><h5><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></h5></td>
+                            <td><h5>General Education</h5></td>
+                        </tr>
+                        <tr>
+                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo3">'; 
+                                if($gened){
+                                echo '    
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr><td><h6>Name</h6></td><td><h6>Number</h6></td><td><h6>Credits</h6></td><td><h6>Action</h6></td></tr>
+                                    </thead>
+                                    <tbody>';
+                                        foreach($gened as $course) {
+                                        echo '
+                                        <tr><td>'.$course['CourseTitle'].'</td>
+                                        <td>'.$course['Number'].'</td>
+                                        <td>'.$course['Credits'].'</td>
+                                        <td><a href="#" class="btn btn-default btn-sm" title="delete" onclick="deleteCourse('.$course['CourseID'].');">
+                                        <i class="glyphicon glyphicon-trash"></i></a></td>
+                                        </tr>';  
+                                        }            
+                                    echo '          
+                                    </tbody>
+                                </table>';
+                                }
+                                else
+                                    echo '<h6>No courses added</h6>';
+                                echo'
+                                </div> 
+                            </td>
+                        </tr>
+						<tr data-toggle="collapse" data-target="#demo4" class="accordion-toggle">
+                            <td><h5><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></h5></td>
+                            <td><h5>Electives</h5></td>
+                        </tr>
+                        <tr>
+                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo4">'; 
+                                if($elective){
+                                echo '    
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr><td><h6>Name</h6></td><td><h6>Number</h6></td><td><h6>Credits</h6></td><td><h6>Action</h6></td></tr>
+                                    </thead>
+                                    <tbody>';
+                                        foreach($elective as $course) {
+                                        echo '
+                                        <tr><td>'.$course['CourseTitle'].'</td>
+                                        <td>'.$course['Number'].'</td>
+                                        <td>'.$course['Credits'].'</td>
+                                        <td><a href="#" class="btn btn-default btn-sm" title="delete" onclick="deleteCourse('.$course['CourseID'].');">
+                                        <i class="glyphicon glyphicon-trash"></i></a></td>
+                                        </tr>';  
+                                        }            
+                                    echo '          
+                                    </tbody>
+                                </table>';
+                                }
+                                else
+                                    echo '<h6>No courses added</h6>';
+                                echo'
+                                </div> 
+                            </td>
+                        </tr>'; 
+						}
+						else if($degree == 1){
+						echo '
+						<tr data-toggle="collapse" data-target="#demo0" class="accordion-toggle">
+                            <td><h5><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></h5></td>
+                            <td><h5>CS Core</h5></td>
+                        </tr>
+                        <tr>
+                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo0">';
+                                if($core){
+                                echo '
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr><td><h6>Name</h6></td><td><h6>Number</h6></td><td><h6>Credits</h6></td><td><h6>Action</h6></td></tr>
+                                    </thead>
+                                    <tbody>';
+                                        foreach($core as $course) {
+                                        echo '
+                                        <tr><td>'.$course['CourseTitle'].'</td>
+                                        <td>'.$course['Number'].'</td>
+                                        <td>'.$course['Credits'].'</td>
+                                        <td><button class="btn btn-default btn-sm" title="delete" onclick="deleteCourse('.$course['CourseID'].');">
+                                        <i class="glyphicon glyphicon-trash"></i></button></td>
+                                        </tr>';  
+                                        }            
+                                    echo '    
+                                    </tbody>
+                                </table>';
+                                }
+                                else
+                                    echo '<h6>No courses added here</h6>';
+                                echo '    
+                                </div> 
+                            </td>
+                        </tr>
+                        <tr data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                            <td><h5><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></h5></td>
+                            <td><h5>Related Field Core</h5></td>
+                        </tr>
+                        <tr>
+                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo1">';
+                                if($rfcore){
+                                echo '
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr><td><h6>Name</h6></td><td><h6>Number</h6></td><td><h6>Credits</h6></td><td><h6>Action</h6></td></tr>
+                                    </thead>
+                                    <tbody>';
+                                        foreach($rfcore as $course) {
+                                        echo '
+                                        <tr><td>'.$course['CourseTitle'].'</td>
+                                        <td>'.$course['Number'].'</td>
+                                        <td>'.$course['Credits'].'</td>
+                                        <td><button class="btn btn-default btn-sm" title="delete" onclick="deleteCourse('.$course['CourseID'].');">
+                                        <i class="glyphicon glyphicon-trash"></i></button></td>
+                                        </tr>';  
+                                        }            
+                                    echo '    
+                                    </tbody>
+                                </table>';
+                                }
+                                else
+                                    echo '<h6>No courses added here</h6>';
+                                echo '    
+                                </div> 
+                            </td>
+                        </tr>
+                        <tr data-toggle="collapse" data-target="#demo2" class="accordion-toggle">
+                            <td><h5><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></h5></td>
+                            <td><h5>General Education - Liberal Arts</h5></td>
+                        </tr>
+                        <tr>
+                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo2">'; 
+                                if($gened_la){
+                                echo '    
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr><td><h6>Name</h6></td><td><h6>Number</h6></td><td><h6>Credits</h6></td><td><h6>Action</h6></td></tr>
+                                    </thead>
+                                    <tbody>';
+                                        foreach($gened_la as $course) {
+                                        echo '
+                                        <tr><td>'.$course['CourseTitle'].'</td>
+                                        <td>'.$course['Number'].'</td>
+                                        <td>'.$course['Credits'].'</td>
+                                        <td><a href="#" class="btn btn-default btn-sm" title="delete" onclick="deleteCourse('.$course['CourseID'].');">
+                                        <i class="glyphicon glyphicon-trash"></i></a></td>
+                                        </tr>';  
+                                        }            
+                                    echo '          
+                                    </tbody>
+                                </table>';
+                                }
+                                else
+                                    echo '<h6>No courses added</h6>';
+                                echo'
+                                </div> 
+                            </td>
+                        </tr>
+						<tr data-toggle="collapse" data-target="#demo3" class="accordion-toggle">
+                            <td><h5><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></h5></td>
+                            <td><h5>General Education - Math and Science</h5></td>
+                        </tr>
+                        <tr>
+                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo3">'; 
+                                if($gened_ms){
+                                echo '    
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr><td><h6>Name</h6></td><td><h6>Number</h6></td><td><h6>Credits</h6></td><td><h6>Action</h6></td></tr>
+                                    </thead>
+                                    <tbody>';
+                                        foreach($gened_ms as $course) {
+                                        echo '
+                                        <tr><td>'.$course['CourseTitle'].'</td>
+                                        <td>'.$course['Number'].'</td>
+                                        <td>'.$course['Credits'].'</td>
+                                        <td><a href="#" class="btn btn-default btn-sm" title="delete" onclick="deleteCourse('.$course['CourseID'].');">
+                                        <i class="glyphicon glyphicon-trash"></i></a></td>
+                                        </tr>';  
+                                        }            
+                                    echo '          
+                                    </tbody>
+                                </table>';
+                                }
+                                else
+                                    echo '<h6>No courses added</h6>';
+                                echo'
+                                </div> 
+                            </td>
+                        </tr>
+						<tr data-toggle="collapse" data-target="#demo4" class="accordion-toggle">
+                            <td><h5><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></h5></td>
+                            <td><h5>Electives</h5></td>
+                        </tr>
+                        <tr>
+                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo4">'; 
+                                if($elective){
+                                echo '    
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr><td><h6>Name</h6></td><td><h6>Number</h6></td><td><h6>Credits</h6></td><td><h6>Action</h6></td></tr>
+                                    </thead>
+                                    <tbody>';
+                                        foreach($elective as $course) {
+                                        echo '
+                                        <tr><td>'.$course['CourseTitle'].'</td>
+                                        <td>'.$course['Number'].'</td>
+                                        <td>'.$course['Credits'].'</td>
+                                        <td><a href="#" class="btn btn-default btn-sm" title="delete" onclick="deleteCourse('.$course['CourseID'].');">
+                                        <i class="glyphicon glyphicon-trash"></i></a></td>
+                                        </tr>';  
+                                        }            
+                                    echo '          
+                                    </tbody>
+                                </table>';
+                                }
+                                else
+                                    echo '<h6>No courses added</h6>';
+                                echo'
+                                </div> 
+                            </td>
+                        </tr>'; 
+						}
+						echo '
+						<tr data-toggle="collapse" data-target="#demo5" class="accordion-toggle">
                             <td><h5><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></h5></td>
                             <td><h5>Other Courses</h5></td>
                         </tr>
                         <tr>
                             <tr>
-                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo3">'; 
+                            <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo5">'; 
                                 if($other){
                                 echo '
                                 <table class="table table-striped">
@@ -281,9 +917,33 @@ echo '
                         </div>
                         <div class="row">
                             <div class="col-md-2"><h4><label for="category" style="padding-top:8px">Course:</label></h4></div>
-                            <div class="col-md-8"><select class="form-control" style="width: 100%" name="type">
-                                <option value="core">Core</option>
-                                <option value="applied">Applied Core</option>
+                            <div class="col-md-8"><select class="form-control" style="width: 100%" name="type">';
+                                if($degree == 4){
+								echo '
+									<option value="core">Core</option>';
+								}
+								else if($degree == 3){
+								echo '
+									<option value="precore">Graduate Pre-Core</option>
+									<option value="core">Graduate Core</option>
+									<option value="applied">Applied Core</option>';
+								}
+								else if($degree == 2){
+								echo '
+									<option value="core">CSE Core</option>
+									<option value="choice">CSE Core Choice</option>
+									<option value="mse">Math, Science, Engineering Core</option>
+									<option value="gened">General Education</option>';
+								}
+								else if($degree == 1){
+								echo '
+									<option value="core">CS Core</option>
+									<option value="rfcore">Related Field Core</option>
+									<option value="gened_la">General Education - Liberal Arts</option>
+									<option value="gened_ms">General Education - Math and Science</option>';
+								}
+								echo '
+								<option value="elective">Elective</option>
                                 <option value="other">Other</option>
                             </select></div>
                         </div>

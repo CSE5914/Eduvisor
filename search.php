@@ -1,35 +1,53 @@
 <?php
 
-$question = $_POST['ask'];
+$question = $_POST['ask'];    
+    $items=10;
+    $formattedAnswer="True";
+    $lat="";
+    $passthru="";
+    $category="";
+    $context="";
+    $evidenceRequest_profile="yes";
+    $evidenceRequest_items="8";
 
-$username = "osu_student23";
-$password = "mkzNvWyD";
-$authString = "Basic " . base64_encode($username . ":" . $password);
+    $username = "osu_student16";
+    $password = "OquihcQI";
+    $authString = "Basic " . base64_encode($username . ":" . $password);
 
-$watsonURL = "https://watson-wdc01.ihost.com/instance/501/deepqa/v1/question";
+    $watsonURL = "https://watson-wdc01.ihost.com/instance/501/deepqa/v1/question";
+    
 
-$questionInfo='{"question":{ "questionText":"' . $question .'", "formattedAnswer":true}}';
+     //= '{"question":{ "questionText":"' . $question .', "formattedAnswer":true}}';
+    $questionInfo='{"question":{ "questionText":"' . $question .'", "formattedAnswer":"'.$formattedAnswer.'" , "lat":"'.$lat.'","passthru":"'.$passthru.'","items":"'.$items.'","category":"'.$category.'","context":"'.$context.'","evidenceRequest":{"profile":"'.$evidenceRequest_profile.'" , "items":"'.$evidenceRequest_items.'"}}}';
+    //$questionInfo='{"question":{ "questionText":"' .$question.'" }}';
+    $options = array(
+        "http" => array(
+            "header" => "X-SyncTimeout: 30\r\n" .
+                        "Content-Type: application/json\r\n" .
+                        "Accept: application/json\r\n" .
+                        "Authorization: " . $authString . "\r\n",
+            "method" => "POST",
+            "content" => $questionInfo,
+        ),
+    );
 
-$options = array(
-	"http" => array(
-		"header" => "X-SyncTimeout: 30\r\n" .
-					"Content-Type: application/json\r\n" .
-					"Accept: application/json\r\n" .
-					"Authorization: " . $authString . "\r\n",
-		"method" => "POST",
-		"content" => $questionInfo,
-	),
-);
+    $context = stream_context_create($options);
 
-$context = stream_context_create($options);
+    $result = file_get_contents($watsonURL, true, $context);
+    //var_dump($result);
+    $watsonResult = json_decode($result);
+    $answers = $watsonResult->{"question"}->{"answers"};
+    $evidence=$watsonResult->{"question"}->{"evidencelist"};
+    $numb=count($answers);
+    $dedicated_answer=[];
 
-$result = file_get_contents($watsonURL, false, $context);
-
-$watsonResult = json_decode($result);
-$answers = $watsonResult->{"question"}->{"answers"};
-$evidence = $watsonResult->{"question"}->{"evidencelist"};
-
-$response = $answers[0];
+    for($i=0;$i<$numb;$i++)
+    {
+        echo $evidence[$i]->{"metadataMap"}->{"originalfile"};
+        if(preg_match("/\ACF_.*/i", $evidence[$i]->{"metadataMap"}->{"originalfile"})){
+            $dedicated_answer[] = $answers[$i];
+        }
+    }
 
 echo '
 	<!DOCTYPE html>
@@ -159,7 +177,8 @@ if(isset($_SESSION['student_id'])){
         <div class="row">
             <div class="container-fluid">';
 $i = 0;
-foreach ($answers as &$value)
+if(count($dedicated_answer)>0){
+foreach ($dedicated_answer as &$value)
 {
     if($i == 0 && intval(substr($value->{"confidence"},2,2)) < 25)
     {echo '
@@ -206,6 +225,19 @@ foreach ($answers as &$value)
                 
                 <br>';
                 $i++;
+
+}
+}else{
+    echo '
+        <div class="modal-dialog" id="modal" style="position:fixed;top: 100px;right: 0;left: 0;z-index: 1050;-webkit-overflow-scrolling: touch;outline: 0;">
+            <div class="modal-content">
+            <h5 style="padding:15px;">Sorry we do not have answer to that question, maybe you should ask this question on our forum.</h5>
+                    <div class="modal-footer">
+                        <a href="main_forum.php" class="btn btn-success">Go to Forum</a>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="displayme()">Close</button>
+                    </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->';
 
 }
 echo '
