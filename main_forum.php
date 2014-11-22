@@ -1,15 +1,15 @@
 <?php
-
-
 $username="root"; // Mysql username 
 $password=""; // Mysql password 
 $db_name="eduvisor"; // Database name 
 $tbl_name="forum_question1"; // Table name 
 
 session_start();
-echo'
+   
+echo '
 <html lang="en">
-    <head>
+
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -51,7 +51,8 @@ echo'
     </style>
     </head>
 
-    <body id="page-top" class="index" style="background:#b00;">
+<body id="page-top" class="index">
+
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
@@ -119,55 +120,66 @@ echo'
         </div>
         <!-- /.container-fluid -->
     </nav>
-    <header>
-        <div class="row" style="padding-top:80px;">
-            <h1>Edu-visor Community</h1>
-            <hr class="star-light"/>
-            <h4 style="text-transform:none;margin-top:30px;">If you cant find the answer using our search, try posting your question here to see answers from other users.</h4>
+    <br>
+    <section class="success" id="register">
+        <div class="container">
+            <div class="col-lg-12 text-center">
+                <h2>Edu-visor Community</h2>
+                <hr class="star-light">
+                <h4 style="text-transform:none;margin-top:30px;">If you cant find the answer using our search, try posting your question here to see answers from other users.</h4>
+            </div>
         </div>
-    </header>
-    <div class="row" style="margin-top:40px; margin-bottom:50px;">
-        <div class="col-md-10 col-md-offset-1">
-            <table class="table table-striped table-bordered">
-                <thead>
-                <tr>
-                    <th class="col-md-5 text-center">Topic</th>
-                    <th class="col-md-2 text-center">Views</th>
-                    <th class="col-md-2 text-center">Replies</th>
-                    <th class="col-md-3 text-center">Posted</th>
-                </tr>
-                </thead>
-                <tbody>';
-                $con = mysqli_connect("localhost","root","","eduvisor");
-                if(mysqli_connect_errno())
-                        echo "Failed" . mysqli_connect_error(); 
+    </section>
 
-                $result = mysqli_query($con,"SELECT * FROM $tbl_name ORDER BY id DESC");
+    <div class="container">   
+        <div class="row">
+              
+        </div>
+        <br>
+        <div classe="row">
+            <div class="container-fluid">
+                <div class="col-md-12">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th class="col-md-5 text-center">Topic</th>
+                            <th class="col-md-2 text-center">Views</th>
+                            <th class="col-md-2 text-center">Replies</th>
+                            <th class="col-md-3 text-center">Posted</th>
+                        </tr>
+                        </thead>
+                        <tbody>';
+                        $con = mysqli_connect("localhost","root","","eduvisor");
+                        if(mysqli_connect_errno())
+                                echo "Failed" . mysqli_connect_error(); 
 
-                while($row=mysqli_fetch_array($result)){
-                echo'
-                    <tr>
-                        <td><a href="view_topic.php?id='.$row['id'].'">'.$row['topic'].'</a></td>
-                        <td class="col-md-2 text-center">'.$row['view'].'</td>
-                        <td class="col-md-2 text-center">'.$row['reply'].'</td>
-                        <td class="col-md-3 text-center">'.$row['datetime'].'</td>
-                    </tr>';
+                        $result = mysqli_query($con,"SELECT * FROM $tbl_name ORDER BY id DESC");
+
+                        while($row=mysqli_fetch_array($result)){
+                        echo'
+                            <tr>
+                                <td><a href="view_topic.php?id='.$row['id'].'">'.$row['topic'].'</a></td>
+                                <td class="col-md-2 text-center">'.$row['view'].'</td>
+                                <td class="col-md-2 text-center">'.$row['reply'].'</td>
+                                <td class="col-md-3 text-center">'.$row['datetime'].'</td>
+                            </tr>';
+                        }
+                        echo'
+                        </tbody>
+                    </table>
+                </div>';
+                if(isset($_SESSION['student_id'])){
+                echo'    
+                <div class="row col-md-2 col-md-offset-10" style="margin-top:40px;">
+                    <a type="button" class="btn btn-primary btn-md btn-block" href="create_topic.php">Add new topic</a>
+                </div>';
                 }
                 echo'
-                </tbody>
-            </table>
-        </div>';
-        if(isset($_SESSION['student_id'])){
-        echo'    
-        <div class="row col-md-2 col-md-offset-9" style="margin-top:40px;">
-        <a type="button" class="btn btn-primary btn-md btn-block" href="create_topic.php">Add new topic</a>
-        </div>';
-        }
-    echo'    
+            </div> 
+        </div>         
     </div>
-    </body>
-
-    <footer class="text-center" id="footer">
+    <!-- Footer -->
+    <footer class="text-center" id="footer" style="margin-top:40px;">
         <div class="footer-below">
             <div class="container">
                 <div class="row">
@@ -178,5 +190,31 @@ echo'
             </div>
         </div>
     </footer>
+
+    <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
+    <div class="scroll-top page-scroll visible-xs visble-sm">
+        <a class="btn btn-primary" href="#page-top">
+            <i class="fa fa-chevron-up"></i>
+        </a>
+    </div>
+    <!-- jQuery Version 1.11.0 -->
+    <script src="js/jquery-1.11.0.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="js/classie.js"></script>
+    <script src="js/cbpAnimatedHeader.js"></script>
+
+    <!-- Contact Form JavaScript -->
+    <script src="js/jqBootstrapValidation.js"></script>
+    <script src="js/contact_me.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/freelancer.js"></script>
+
+</body>
 </html>';
-?> 
+?>
