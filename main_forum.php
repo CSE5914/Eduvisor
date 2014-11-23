@@ -1,7 +1,4 @@
 <?php
-$username="root"; // Mysql username 
-$password=""; // Mysql password 
-$db_name="eduvisor"; // Database name 
 $tbl_name="forum_question1"; // Table name 
 
 session_start();

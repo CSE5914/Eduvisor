@@ -1,9 +1,6 @@
 <?php
 session_start();
 if(isset($_SESSION['student_id'])){
-    $con = mysqli_connect("localhost","root","","eduvisor");
-        if(mysqli_connect_errno())
-            echo "Failed" . mysqli_connect_error();
     $student_id=$_SESSION['student_id'];    
 } else{
     session_destroy();
@@ -112,11 +109,6 @@ if(isset($_SESSION['student_id'])){
 	<label for="topic"><h4 style="color:white;margin-bottom:5px;">Question</h4></label>
     <textarea rows="3" type="text" class="form-control" name="detail" id="detail" placeholder="Enter question..."></textarea>
 </div>
-<?php echo '
-<div class="form-group" style="display:none;">
-	<label for="name"><h4 style="color:white;margin-bottom:5px;margin-bottom:5px;">Name</h4></label>
-    <input type="text" class="form-control" name="name" id="name" value="'.explode(" ",$_SESSION['user'])[0].'" readonly>
-</div>' ?>
 <div class="form-group" style="display:none;">
 	<label for="email"><h4 style="color:white;margin-bottom:5px;">Email</h4></label>
     <input type="text" class="form-control" name="email" id="email" value="DELETE@AOL.com" disabled>
