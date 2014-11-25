@@ -157,10 +157,45 @@ echo '
  document.getElementById("modal2").style.display = "none";}
  function displayme3(){
  document.getElementById("modal3").style.display = "none";}</script>
+<style>
+html,body{
+    height: 100%
+}
 
-</head>
+#holder{
+    min-height: 100%;
+    position:relative;
+}
 
-<body id="page-top" class="index">
+#body{
+    padding-bottom: 70px;    /* height of footer */
+}
+
+footer{
+    height: 70px; 
+    width:100%;
+    position: absolute;
+    left: 0;
+    bottom: 0; 
+}
+    </style>
+        <script>
+    function changebody() {
+    alert("HERE");
+    document.body.style.background = "#b00;";
+}
+    </script>
+</head>';
+session_start();
+if(isset($_SESSION['student_id'])){
+    echo '<body id="page-top" class="index" style="background-color:#b00">';
+}
+else
+{
+    echo'<body id="page-top" class="index">';
+}
+echo '<div id="holder">
+<div id="body">
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -182,7 +217,6 @@ echo '
                     <li class="hidden">
                         <a href="#page-top"></a>
                     </li>';
-               session_start();
 if(isset($_SESSION['student_id'])){
                 echo '<li class="page-scroll">
                        <a href="profile_personal.php">Welcome,  '.explode(" ",$_SESSION['user'])[0].'</a>
@@ -221,7 +255,8 @@ if(isset($_SESSION['student_id'])){
     </nav>';
 
     if(!isset($_SESSION['student_id'])){
-    echo '<!-- Header -->
+    echo '
+    <!-- Header -->
     <header>
         <div class="container">
             <div class="row">
@@ -362,8 +397,8 @@ if(isset($_SESSION['student_id'])){
 else
 {
     echo '<!-- Header -->
-    <header style="height:100%;">
-        <div class="container">
+    <header>
+        <div class="container" style="padding-top:100px;padding-bottom:50px;">
             <div class="row">
                 <div class="col-lg-12">
                     <img class="img-responsive" src="img/profile.png" alt="">
@@ -385,8 +420,10 @@ else
         </div>
     </header>';
 }
-echo '<!-- Footer -->
-    <footer class="text-center navbar-fixed-bottom" id="footer">
+echo '
+</div>
+<!--End body, start Footer -->
+    <footer class="text-center" id="footer">
         <div class="footer-below">
             <div class="container">
                 <div class="row">
@@ -423,7 +460,7 @@ echo '<!-- Footer -->
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>
-
+</div>
 </body>
 
 </html>';
