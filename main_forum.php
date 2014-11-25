@@ -39,17 +39,38 @@ echo '
     }
      .table-striped>tbody>tr:nth-child(even)>td, .table-striped>tbody>tr:nth-child(even)>th
     {
-        background-color:#D3D3D3;
+        background-color:#757575;
     }
     tbody tr td, tbody tr td a, tbody tr th
     {
-        color:white;
+        color:white !important;
     }
+    html,body{
+    height: 100%
+}
+
+#holder{
+    min-height: 100%;
+    position:relative;
+}
+
+#body{
+    padding-bottom: 70px;    /* height of footer */
+}
+
+footer{
+    height: 70px; 
+    width:100%;
+    position: absolute;
+    left: 0;
+    bottom: 0; 
+}
     </style>
     </head>
 
-<body id="page-top" class="index">
-
+<body id="page-top" class="index" style="color:white !important;background-color:#b00;">
+<div id="holder">
+<div id="body">
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
@@ -139,10 +160,10 @@ echo '
                     <table class="table table-striped table-bordered">
                         <thead>
                         <tr>
-                            <th class="col-md-5 text-center">Topic</th>
-                            <th class="col-md-2 text-center">Views</th>
-                            <th class="col-md-2 text-center">Replies</th>
-                            <th class="col-md-3 text-center">Posted</th>
+                            <th class="col-md-5 text-center"><h5>Topic</h5></th>
+                            <th class="col-md-2 text-center"><h5>Views</h5></th>
+                            <th class="col-md-2 text-center"><h5>Replies</h5></th>
+                            <th class="col-md-3 text-center"><h5>Posted</h5></th>
                         </tr>
                         </thead>
                         <tbody>';
@@ -155,10 +176,10 @@ echo '
                         while($row=mysqli_fetch_array($result)){
                         echo'
                             <tr>
-                                <td><a href="view_topic.php?id='.$row['id'].'">'.$row['topic'].'</a></td>
-                                <td class="col-md-2 text-center">'.$row['view'].'</td>
-                                <td class="col-md-2 text-center">'.$row['reply'].'</td>
-                                <td class="col-md-3 text-center">'.$row['datetime'].'</td>
+                                <td><a href="view_topic.php?id='.$row['id'].'"><h5>'.$row['topic'].'</h5></a></td>
+                                <td class="col-md-2 text-center"><h5>'.$row['view'].'</h5></td>
+                                <td class="col-md-2 text-center"><h5>'.$row['reply'].'</h5></td>
+                                <td class="col-md-3 text-center"><h5>'.$row['datetime'].'</h5></td>
                             </tr>';
                         }
                         echo'
@@ -167,7 +188,7 @@ echo '
                 </div>';
                 if(isset($_SESSION['student_id'])){
                 echo'    
-                <div class="row col-md-2 col-md-offset-10" style="margin-top:40px;">
+                <div class="row col-md-2 col-md-offset-10" style="margin-top:40px;margin-bottom:40px;">
                     <a type="button" class="btn btn-primary btn-md btn-block" href="create_topic.php">Add new topic</a>
                 </div>';
                 }
@@ -175,8 +196,9 @@ echo '
             </div> 
         </div>         
     </div>
+    </div>
     <!-- Footer -->
-    <footer class="text-center" id="footer" style="margin-top:40px;">
+    <footer class="text-center" id="footer"" id="footer">
         <div class="footer-below">
             <div class="container">
                 <div class="row">
@@ -211,7 +233,7 @@ echo '
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>
-
+</div>
 </body>
 </html>';
 ?>

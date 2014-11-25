@@ -250,9 +250,33 @@ echo '
             theForm.submit();
         }
     </script>
+    <style>
+html,body{
+    height: 100%
+}
+
+#holder{
+    min-height: 100%;
+    position:relative;
+}
+
+#body{
+    padding-bottom: 70px;    /* height of footer */
+}
+
+footer{
+    height: 70px; 
+    width:100%;
+    position: absolute;
+    left: 0;
+    bottom: 0; 
+}
+    </style>
 </head>
 
 <body id="page-top" class="index">
+<div id="holder">
+<div id="body">
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -301,7 +325,6 @@ echo '
         </div>
     </section>
 
-    </div>
     <div class="container">   
         <div class="row">
             <div class="col-lg-10">
@@ -891,8 +914,9 @@ echo '
 
 
     </section>
-    <!-- Footer -->
-    <footer class="text-center navbar-fixed-bottom" id="footer">
+    </div>
+    <!--End body, start Footer -->
+    <footer class="text-center" id="footer">
         <div class="footer-below">
             <div class="container">
                 <div class="row">
@@ -1014,7 +1038,7 @@ echo '
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>
-
+</div>
 </body>
 
 </html>';

@@ -201,7 +201,7 @@ foreach ($dedicated_answer as &$value)
                <div class="list-group" data-toggle="collapse" data-target="#answer'.$i.'" class="accordion-toggle" style="margin-bottom:0;">
                     <a class="list-group-item active">
                         <h4 class="list-group-item-heading">Answer</h4>
-                        <p class="list-group-item-text" style="color:white;">'.$value->{"text"}.'</p>
+                        <p class="list-group-item-text" style="color:white;">'.substr($value->{"text"}, strpos($value->{"text"}, "-") + 1).'</p>
                     </a>
                        <div class="container collapse" id="answer'.$i.'">   
                           <div class="panel-body">';

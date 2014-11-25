@@ -54,11 +54,33 @@ echo'
     {
         color:white;
     }
+    html,body{
+    height: 100%
+}
+
+#holder{
+    min-height: 100%;
+    position:relative;
+}
+
+#body{
+    padding-bottom: 70px;    /* height of footer */
+}
+
+footer{
+    height: 70px; 
+    width:100%;
+    position: absolute;
+    left: 0;
+    bottom: 0; 
+}
     </style>
 
 </head>
 
-<body id="page-top" class="index" style="background:#b00;">
+<body id="page-top" class="index" style="background-color:#b00;">
+<div id="holder">
+<div id="body">
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -178,8 +200,8 @@ echo'
         }
     echo'    
     </div>
-    </body>
-    <footer class="text-center" id="footer">
+    </div>
+    <footer class="text-center" id="footer" style="height:70px;">
         <div class="footer-below">
             <div class="container">
                 <div class="row">
@@ -190,5 +212,7 @@ echo'
             </div>
         </div>
     </footer>
+    </div>
+    </body>
 </html>';
 ?>
