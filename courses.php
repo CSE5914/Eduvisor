@@ -108,101 +108,6 @@ if(isset($_SESSION['student_id'])){
 			}
             $student_courses[]=$row2['Number'];
 		}
-	}	if($degree == 4){
-		while($row = mysqli_fetch_array($result)) {
-			$result2 = mysqli_query($con,"SELECT * FROM course_list WHERE CourseID='" . $row['course_id'] . "'");
-			$row2 = mysqli_fetch_array($result2);
-			if($row['type'] === "core"){
-				$core[] = $row2;
-			}	    
-			else if($row['type'] === "elective"){
-				$elective[] = $row2;
-			}
-			else{
-				$other[] = $row2;
-			}
-            $student_courses[]=$row2['Number'];
-		}
-    }
-	if($degree == 3){
-		$precore=[];
-		$applied=[];
-		while($row = mysqli_fetch_array($result)) {
-			$result2 = mysqli_query($con,"SELECT * FROM course_list WHERE CourseID='" . $row['course_id'] . "'");
-			$row2 = mysqli_fetch_array($result2);
-			if($row['type'] === "core"){
-				$core[] = $row2;
-			}	    
-			else if($row['type'] === "applied"){
-				$applied[] = $row2;
-			}
-			else if($row['type'] === "precore"){
-				$precore[] = $row2;
-			}
-			else if($row['type'] === "elective"){
-				$elective[] = $row2;
-			}
-			else{
-				$other[] = $row2;
-			}
-            $student_courses[]=$row2['Number'];
-		}
-    }
-	else if($degree == 2){
-		$choice=[];
-		$mse=[];
-		$gened=[];
-		while($row = mysqli_fetch_array($result)){
-			$result2 = mysqli_query($con,"SELECT * FROM course_list WHERE CourseID='" . $row['course_id'] . "'");
-			$row2 = mysqli_fetch_array($result2);
-			if($row['type'] === "core"){
-				$core[] = $row2;
-			}	    
-			else if($row['type'] === "choice"){
-				$choice[] = $row2;
-			}
-			else if($row['type'] === "mse"){
-				$mse[] = $row2;
-			}
-			else if($row['type'] === "elective"){
-				$elective[] = $row2;
-			}
-			else if($row['type'] === "gened"){
-				$gened[] = $row2;
-			}	
-			else{
-				$other[] = $row2;
-			}
-            $student_courses[]=$row2['Number'];
-		}
-	}
-	else if($degree == 1){
-		$rfcore=[];
-		$gened_la=[];
-		$gened_ms=[];
-		while($row = mysqli_fetch_array($result)){
-			$result2 = mysqli_query($con,"SELECT * FROM course_list WHERE CourseID='" . $row['course_id'] . "'");
-			$row2 = mysqli_fetch_array($result2);
-			if($row['type'] === "core"){
-				$core[] = $row2;
-			}	    
-			else if($row['type'] === "rfcore"){
-				$rfcore[] = $row2;
-			}
-			else if($row['type'] === "gened_la"){
-				$gened_la[] = $row2;
-			}
-			else if($row['type'] === "gened_ms"){
-				$gened_ms[] = $row2;
-			}
-			else if($row['type'] === "elective"){
-				$elective[] = $row2;
-			}	
-			else{
-				$other[] = $row2;
-			}
-            $student_courses[]=$row2['Number'];
-		}
 	}
 
 echo '
@@ -950,7 +855,7 @@ footer{
                             </select></div>
                         </div>
                         <div class="row">
-                            <div class="col-md-2"><h4><label for="category" style="padding-top:8px">Course:</label></h4></div>
+                            <div class="col-md-2"><h4><label for="category" style="padding-top:8px">Type:</label></h4></div>
                             <div class="col-md-8"><select class="form-control" style="width: 100%" name="type">';
                                 if($degree == 4){
 								echo '
