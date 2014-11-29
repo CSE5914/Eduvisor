@@ -149,7 +149,8 @@ footer{
                 <ul class="nav nav-tabs">  
                     <li ><a href="profile_personal.php"><i class="glyphicon glyphicon-user"></i> Personal</a></li>
                     <li class=""><a href="courses.php"><i class="glyphicon glyphicon-book"></i> Courses</a></li>
-                    <li class="active"><a href="savedQuestions.php"><i class="glyphicon glyphicon-book"></i> Saved Questions</a></li>
+                    <li><a href="recommendation.php"><i class="glyphicon glyphicon-comment"></i> Reccommendations</a></li>
+                    <li class="active"><a href="savedQuestions.php"><i class="glyphicon glyphicon-inbox"></i> Saved Questions</a></li>
                 </ul>
             </div>
         </div>
