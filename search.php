@@ -57,7 +57,7 @@
 
     for($i=0;$i<$numb;$i++)
     {
-        echo $evidence[$i]->{"metadataMap"}->{"originalfile"};
+        //echo $evidence[$i]->{"metadataMap"}->{"originalfile"};
         if(preg_match("/\ACF_.*/i", $evidence[$i]->{"metadataMap"}->{"originalfile"})){
             $dedicated_answer[] = $answers[$i];
         }
@@ -69,7 +69,7 @@
 
     }
 
-    askWatson($question);
+    askWatson();
 
 echo '
 	<!DOCTYPE html>
