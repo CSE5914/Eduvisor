@@ -151,24 +151,24 @@ footer{
         <div class="row col-md-12" style="margin-top:30px;">
         	<div class="panel panel-default">
 				  <div class="panel-heading">
-				    <h3 class="panel-title">Question</h3></div>
+				    <h3 class="panel-title">Question<span style="float:right;"><form id="formIncreaseRating" class="form-inline" style="display:inline-block;" role="form" name="formIncreaseRating" method="post" action="increase_ratingQuestion.php"><input type="hidden" name="question_id" id="question_id" value="'.$question_id.'"/><button type="submit" class="btn btn-default btn-xs" style="margin-right:20px;"><span class="glyphicon glyphicon-chevron-up"></span></button></form>'.$row['rating'].'<form id="formIncreaseRating" class="form-inline" style="display:inline-block;" role="form" name="formIncreaseRating" method="post" action="decrease_ratingQuestion.php"><input type="hidden" name="question_id" id="question_id" value="'.$question_id.'"/><button type="submit" class="btn btn-default btn-xs" style="margin-left:20px;"><span class="glyphicon glyphicon-chevron-down"></span></button></form></span></h3></div>
 				  <div class="panel-body">'.$row['detail'].'</div>
 				  <div class="panel-footer">
 				  	<span style="line-height:1.1;"><h6 style="display:inline;">By:' .$student['first_name'].' '.$student['last_name'].' </h6> </span>
 				  	<span style="line-height:1.1;float:right;"><h6 style="display:inline;">Date/time:' .$row['datetime'].'</span>
 				  </div>
         	</div>
-        </div>
-        <BR>';
+            <hr style="width:100%;" class="star-light"><h3 class="text-center" style="color:white;">Top Answer</h3>
+        </div>';
         $count=0;
-        $result2 = mysqli_query($con,"SELECT * FROM $tbl_name2 WHERE question_id='".$question_id."'");
+        $result2 = mysqli_query($con,"SELECT * FROM $tbl_name2 WHERE question_id='".$question_id."' ORDER BY rating DESC");
         while($rows = mysqli_fetch_array($result2)){
         $count  = $count+1;   
         echo'
         <div class="row col-md-12" style="margin-top:30px;">
         	<div class="panel panel-default">
     		    <div class="panel-heading">
-    		      <h3 class="panel-title">Answer '.$count.' </h3>
+    		      <h3 class="panel-title">Answer '.$count.'<span style="float:right;"><form id="formIncreaseRating" class="form-inline" style="display:inline-block;" role="form" name="formIncreaseRating" method="post" action="increase_rating.php"><input type="hidden" name="answer_id" id="answer_id" value="'.$rows['a_id'].'"/><input type="hidden" name="question_id" id="question_id" value="'.$question_id.'"/><button type="submit" class="btn btn-default btn-xs" style="margin-right:20px;"><span class="glyphicon glyphicon-chevron-up"></span></button></form>'.$rows['rating'].'<form id="formIncreaseRating" class="form-inline" style="display:inline-block;" role="form" name="formIncreaseRating" method="post" action="decrease_rating.php"><input type="hidden" name="answer_id" id="answer_id" value="'.$rows['a_id'].'"/><input type="hidden" name="question_id" id="question_id" value="'.$question_id.'"/><button type="submit" class="btn btn-default btn-xs" style="margin-left:20px;"><span class="glyphicon glyphicon-chevron-down"></span></button></form></span></h3>
     		    </div>
     			<div class="panel-body">'.$rows['a_answer'].'</div>';
                 $student_result2 = mysqli_query($con,"SELECT * FROM $tbl_name3 WHERE student_id='".$rows['student_id']."'");
@@ -178,8 +178,12 @@ footer{
     				<span style="line-height:1.1;"><h6 style="display:inline;">By: '.$student2['first_name'].' '.$student2['last_name'].'</h6></span>
     				<span style="line-height:1.1;float:right;"><h6 style="display:inline;">Date/time: '.$rows['a_datetime'].'</h6></span>
     			</div>
-            </div>
-        </div>';
+            </div>';
+        if($count==1)
+        {
+            echo '<hr style="width:100%;" class="star-light"><h4 style="color:white;" class="text-center">Other Answers</h4>';
+        }
+        echo '</div>';
         }
         //$sql3="UPDATE $tbl_name SET view=view+1 WHERE id='$question_id'";
         //$result3=mysql_query($sql3);
@@ -190,7 +194,7 @@ footer{
             <form id="form1" role="form" name="form1" method="post" action="add_answer.php">
                 <div class="form-group">
                     <label for="topic"><h4 style="color:white;margin-bottom:5px;">Answer</h4></label>
-                    <textarea rows="3" type="text" class="form-control" name="a_answer" id="a_answer" placeholder="Enter your answer..."></textarea>
+                    <textarea rows="3" type="text" class="form-control" name="a_answer" id="a_answer" placeholder="Enter your answer..." required></textarea>
                 </div>
                 <input name="question_id" type="hidden" value='.$question_id.'>
                 <input type="submit" class="btn btn-default" name="Submit" value="Submit" /> 

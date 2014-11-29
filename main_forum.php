@@ -161,8 +161,9 @@ footer{
                         <thead>
                         <tr>
                             <th class="col-md-5 text-center"><h5>Topic</h5></th>
-                            <th class="col-md-2 text-center"><h5>Views</h5></th>
-                            <th class="col-md-2 text-center"><h5>Replies</h5></th>
+                            <th class="col-md-2 text-center"><h5>Rating</h5></th>
+                            <th class="col-md-1 text-center"><h5>Views</h5></th>
+                            <th class="col-md-1 text-center"><h5>Replies</h5></th>
                             <th class="col-md-3 text-center"><h5>Posted</h5></th>
                         </tr>
                         </thead>
@@ -171,14 +172,15 @@ footer{
                         if(mysqli_connect_errno())
                                 echo "Failed" . mysqli_connect_error(); 
 
-                        $result = mysqli_query($con,"SELECT * FROM $tbl_name ORDER BY id DESC");
+                        $result = mysqli_query($con,"SELECT * FROM $tbl_name ORDER BY rating DESC");
 
                         while($row=mysqli_fetch_array($result)){
                         echo'
                             <tr>
-                                <td><a href="view_topic.php?id='.$row['id'].'"><h5>'.$row['topic'].'</h5></a></td>
-                                <td class="col-md-2 text-center"><h5>'.$row['view'].'</h5></td>
-                                <td class="col-md-2 text-center"><h5>'.$row['reply'].'</h5></td>
+                                <td class="col-md-5 text-center"><a href="view_topic.php?id='.$row['id'].'"><h5>'.$row['topic'].'</h5></a></td>
+                                <td class="col-md-2 text-center"><h5>'.$row['rating'].'</h5></td>
+                                <td class="col-md-1 text-center"><h5>'.$row['view'].'</h5></td>
+                                <td class="col-md-1 text-center"><h5>'.$row['reply'].'</h5></td>
                                 <td class="col-md-3 text-center"><h5>'.$row['datetime'].'</h5></td>
                             </tr>';
                         }

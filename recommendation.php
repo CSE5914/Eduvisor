@@ -216,7 +216,7 @@ echo '
     <section class="success" id="register">
         <div class="container">
             <div class="col-lg-12 text-center">
-                        <h2>Reccommendations</h2>
+                        <h2>Recommendations</h2>
                         <hr class="star-light">
                     </div>
                 </form>
@@ -233,16 +233,16 @@ echo '
                      <li><a href="profile_personal.php"><i class="glyphicon glyphicon-user"></i> Personal</a></li>
                     <li><a href="courses.php"><i class="glyphicon glyphicon-book"></i> Courses</a></li>
                     <li class="active"><a href=""><i class="glyphicon glyphicon-comment"></i> Reccommendations</a></li>
-                    <li><a href="savedQuestions.php"><i class="glyphicon glyphicon-inbox"></i> Saved Questions</a></li>
+                    <li><a href="savedQuestions.php"><i class="glyphicon glyphicon-floppy-disk"></i> Saved Questions</a></li>
                 </ul>
             </div>  
         </div>
         <div class="row">
-            <div class="container-fluid">';
+            <div class="container-fluid text-center">';
             	if(strcasecmp($focus_area,"CSE")){
-            	echo '<h3>You seem to be interested in <i>'.$focus_area.'</i>, so here are some news regarding this field of study at OSU.</h3>';
+            	echo '<h4>You seem to be interested in <i>'.$focus_area.'</i>, so here are some news regarding this field of study at OSU.</h4>';
                 }else
-                	echo'<h3>It seems you have not taken any course from registered focus areas at OSU, for information on focus area <a href="https://cse.osu.edu/current-students/undergraduate/focus-areas" target="_blank">click here</a>.</h3> <h3>showing latest news from <i>CSE</i></h3>';
+                	echo'<h4>It seems you have not taken any courses from a registered focus areas at OSU, for information on focus areas <a href="https://cse.osu.edu/current-students/undergraduate/focus-areas" target="_blank">click here</a>.</h4> <h3>showing latest news from <i>CSE</i></h4>';
             echo'    
             </div>
         </div>

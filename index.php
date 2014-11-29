@@ -262,10 +262,10 @@ if(isset($_SESSION['student_id'])){
             <div class="row">
                 <div class="col-lg-12">
                     <img class="img-responsive" src="img/profile.png" alt="">
-                    <form action="search.php" method="POST" name="advice" id="adviceform" novalidate>
+                    <form action="search.php" method="POST" name="advice" id="adviceform">
                     <div class="intro-text">
                              <div class="input-group">
-                                <input type="text" class="col-lg-8 form-control" placeholder="Ask me" name="ask" id="ask" >
+                                <input type="text" class="col-lg-8 form-control" placeholder="Ask me" name="ask" id="ask" required>
                                 <span class="input-group-btn">
                                 <button type="submit" class="btn btn-primary btn-small">Advice <i class="glyphicon glyphicon-search"></i></button>
                              </div>
@@ -402,10 +402,10 @@ else
             <div class="row">
                 <div class="col-lg-12">
                     <img class="img-responsive" src="img/profile.png" alt="">
-                    <form action="search.php" method="POST" name="advice" id="adviceform" novalidate>
+                    <form action="search.php" method="POST" name="advice" id="adviceform">
                     <div class="intro-text">
                              <div class="input-group">
-                                <input type="text" class="col-lg-8 form-control" placeholder="Ask me" name="ask" id="ask" >
+                                <input type="text" class="col-lg-8 form-control" placeholder="Ask me" name="ask" id="ask" required>
                                 <span class="input-group-btn">
                                 <button type="submit" class="btn btn-primary btn-small">Advice <i class="glyphicon glyphicon-search"></i></button>
                              </div>

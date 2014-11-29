@@ -1,6 +1,7 @@
 <?php
     //global variables
-    $question = $_POST['ask'];    
+    $question = $_POST['ask'];
+    $KEEPQUESTION = $_POST['ask'];    
     $dedicated_answer=[];
     $keywords=[];
 
@@ -165,10 +166,10 @@ if(isset($_SESSION['student_id'])){
     <section class="success" id="register">
         <div class="container">
             <div class="col-lg-12 text-center">
-                <form action="search.php" method="POST" name="advice" id="adviceform" novalidate>
+                <form action="search.php" method="POST" name="advice" id="adviceform">
                     <div class="intro-text">
                          <div class="input-group">
-                            <input type="text" class="col-lg-8 form-control" placeholder="Ask me" name="ask" id="ask" value="'.$question.'"/>
+                            <input type="text" class="col-lg-8 form-control" required placeholder="Ask me" name="ask" id="ask" value="'.$question.'" />
                             <span class="input-group-btn">
                             <button type="submit" class="btn btn-primary btn-small">Advice <span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                          </div>
@@ -197,15 +198,24 @@ if(isset($_SESSION['student_id'])){
             <div class="col-lg-10">
                 <ul class="nav nav-tabs">  
                      <li class="active"><a href=""><i class="glyphicon glyphicon-user"></i> Response</a></li>
-                    <li><a href="savedQuestions.php"><i class="glyphicon glyphicon-book"></i> Saved Questions</a></li>
+                    <li><a href="savedQuestions.php"><i class="glyphicon glyphicon-floppy-disk"></i> Saved Questions</a></li>
                 </ul>
             </div>
         </div>
         <br>
         <div class="row">
             <div class="container-fluid">
-                <h2>'.$question.'</h2>
-            </div>
+                <h2 style="display:inline-block;">'.$question.'</h2> ';
+        if(isset($_SESSION['student_id'])){
+        echo'
+            <form id="formSaveQuestion" class="form-inline" style="display:inline-block;float:right;" role="form" name="formSaveQuestion" method="post" action="add_question.php">
+                <div class="form-group">
+                    <input name="a_answer" id="a_answer" type="hidden" value="'.$KEEPQUESTION.'">
+                </div>
+                <input type="submit" class="btn btn-primary" name="Submit" value="Save Question" />
+            </form>';
+        }
+        echo '</div>
         </div>
         <div class="row">
             <div class="container-fluid">';
@@ -288,9 +298,9 @@ echo '
 		</section>
         <div  style="padding-bottom:100px;">
         &nbsp;
-        </div>
+        </div>';
         
-    <!-- Footer -->
+    echo '<!-- Footer -->
     <footer class="text-center navbar-fixed-bottom" id="footer">
         <div class="footer-below">
             <div class="container">
@@ -323,8 +333,6 @@ echo '
     <script src="js/cbpAnimatedHeader.js"></script>
 
     <!-- Contact Form JavaScript -->
-    <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>

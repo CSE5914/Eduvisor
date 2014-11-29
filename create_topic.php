@@ -103,11 +103,11 @@ if(isset($_SESSION['student_id'])){
 <form id="form1" role="form" name="form1" method="post" action="add_topic.php">
 <div class="form-group">
 	<label for="topic"><h4 style="color:white;margin-bottom:5px;">Topic</h4></label>
-    <input type="text" class="form-control" name="topic" id="topic" placeholder="Enter topic...">
+    <input type="text" class="form-control" name="topic" id="topic" placeholder="Enter topic..." required>
 </div>
 <div class="form-group">
 	<label for="topic"><h4 style="color:white;margin-bottom:5px;">Question</h4></label>
-    <textarea rows="3" type="text" class="form-control" name="detail" id="detail" placeholder="Enter question..."></textarea>
+    <textarea rows="3" type="text" class="form-control" name="detail" id="detail" placeholder="Enter question..." required></textarea>
 </div>
 <div class="form-group" style="display:none;">
 	<label for="email"><h4 style="color:white;margin-bottom:5px;">Email</h4></label>
