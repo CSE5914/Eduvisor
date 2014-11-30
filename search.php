@@ -194,14 +194,6 @@ if(isset($_SESSION['student_id'])){
         </div> -->
     </div>
     <div class="container">   
-        <div class="row">
-            <div class="col-lg-10">
-                <ul class="nav nav-tabs">  
-                     <li class="active"><a href=""><i class="glyphicon glyphicon-user"></i> Response</a></li>
-                    <li><a href="savedQuestions.php"><i class="glyphicon glyphicon-floppy-disk"></i> Saved Questions</a></li>
-                </ul>
-            </div>
-        </div>
         <br>
         <div class="row">
             <div class="container-fluid">

@@ -158,13 +158,26 @@ footer{
 				  	<span style="line-height:1.1;float:right;"><h6 style="display:inline;">Date/time:' .$row['datetime'].'</span>
 				  </div>
         	</div>
-            <hr style="width:100%;" class="star-light"><h3 class="text-center" style="color:white;">Top Answer</h3>
+            
         </div>';
         $count=0;
         $result2 = mysqli_query($con,"SELECT * FROM $tbl_name2 WHERE question_id='".$question_id."' ORDER BY rating DESC");
         while($rows = mysqli_fetch_array($result2)){
-        $count  = $count+1;   
+        $count  = $count+1;  
+        if($count == 1)
+        {
+            echo '<div class="row col-md-12">
+        <hr style="width:100%;" class="star-light"><h3 class="text-center" style="color:white;">Top Answer</h3>
+        </div>';
+        } 
+        if($count == 2)
+        {
+            echo '<div class="row col-md-12">
+        <hr style="width:100%;" class="star-light"><h4 class="text-center" style="color:white;">Other Answers</h4>
+        </div>';
+        }
         echo'
+        
         <div class="row col-md-12" style="margin-top:30px;">
         	<div class="panel panel-default">
     		    <div class="panel-heading">
@@ -179,10 +192,6 @@ footer{
     				<span style="line-height:1.1;float:right;"><h6 style="display:inline;">Date/time: '.$rows['a_datetime'].'</h6></span>
     			</div>
             </div>';
-        if($count==1)
-        {
-            echo '<hr style="width:100%;" class="star-light"><h4 style="color:white;" class="text-center">Other Answers</h4>';
-        }
         echo '</div>';
         }
         //$sql3="UPDATE $tbl_name SET view=view+1 WHERE id='$question_id'";
